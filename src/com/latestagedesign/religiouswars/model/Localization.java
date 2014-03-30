@@ -17,7 +17,7 @@
  * Have a nise day!
  */
 
-package com.latestagedesign.religiouswars.scripts.util;
+package com.latestagedesign.religiouswars.model;
 
 import java.util.HashMap;
 import java.util.Map;
