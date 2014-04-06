@@ -19,6 +19,7 @@
 
 package com.latestagedesign.religiouswars.view.windows.MainWindow;
 
+import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.view.gui.UIImage;
 import com.latestagedesign.religiouswars.model.Localization;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
@@ -42,15 +43,21 @@ public class MainWindow extends TopComponent{
     private UIImage nataPic = new UIImage("images/nata.jpg");
     private javax.swing.JButton jButton1;
     
+    private GameField field;
+    
     public MainWindow() {
         setDisplayName(Localization.Get("#religious_wars"));
         
-        jButton1 = new javax.swing.JButton("TEST");
-        
         this.setLayout(new BorderLayout());
-        add(new TopBar(), BorderLayout.NORTH);
-        add(new GameField(), BorderLayout.CENTER);
-        add(new BotBar(), BorderLayout.SOUTH);
+        try{
+            field = new GameField();
+            add(new TopBar(), BorderLayout.NORTH);
+            add(field, BorderLayout.CENTER);
+            add(new BotBar(), BorderLayout.SOUTH);
+            
+            FieldController.getinstance().CreateField();
+        }
+        catch(Exception e){}
         //this.add(jButton1, BorderLayout.CENTER);
         
     }

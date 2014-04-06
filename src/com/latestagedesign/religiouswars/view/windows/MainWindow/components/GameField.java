@@ -21,18 +21,37 @@ package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
 import com.latestagedesign.religiouswars.control.exceptions.InitializationException;
 import com.latestagedesign.religiouswars.control.field.FieldController;
+import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.List;
 import javax.swing.JComponent;
 
 public class GameField extends JComponent {
     
     private FieldController controller;
     
-    
+    public List<VOFieldLocation> fieldLocations;
     
     public GameField() throws InitializationException{
         controller = FieldController.getinstance();
         controller.Init(this);
     }
     
+    public void paint(Graphics g) {
+        g.setColor(Color.white);
+        g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+        DrawField(g);
+    }
     
+    public void DrawField(Graphics g){
+        g.setColor(Color.black);
+        
+        
+        
+        
+        
+    }
 }

@@ -20,6 +20,7 @@
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -44,23 +45,24 @@ public class BotBar extends JComponent {
         buildBar = new JPanel();
         hiddenBar = new JPanel();
         attackBar = new JPanel();
-        setLayout(new BorderLayout());
-        
+        hiddenBar.setLayout(new BorderLayout());
+        hiddenBar.add(new Button("hidden"), BorderLayout.CENTER);
+        SwitchToState(BotBarStatus.HIDDEN);
     }
     
     public void SwitchToState(BotBarStatus newStatus){
         curStatus = newStatus;
         switch(newStatus){
             case ATTACK:{
-                setLayout(new BorderLayout());
+                this.setLayout(new BorderLayout());
                 add(attackBar, BorderLayout.CENTER);
             } break;
             case BUILDING:{
-                setLayout(new BorderLayout());
+                this.setLayout(new BorderLayout());
                 add(buildBar, BorderLayout.CENTER);
             } break;
             case HIDDEN:{
-                setLayout(new BorderLayout());
+                this.setLayout(new BorderLayout());
                 add(hiddenBar, BorderLayout.CENTER);
             } break;
             

@@ -32,10 +32,25 @@ public class VOMap {
     public List<VOLocation> locations;
     
     public VOMap Clone(){
-        return new VOMap();
+        VOMap clone = new VOMap();
+        clone.locations = new ArrayList<VOLocation>();
+        
+        for(int i = 0; i < locations.size(); i++){
+            clone.locations.add(locations.get(i).Clone(clone.locations));
+        }
+        
+        return clone;
     }
     
-    public void AddLocation(int id, List<Integer> neighbours){
+    public VOLocation GetLocationById(Integer id){
+        for(VOLocation loc : locations){
+            if(loc.id == id) return loc;
+        }
+        
+        return null;
+    }
+    
+    public void AddLocation(int id, List<Integer> neighbours, int weight){
         if(locations == null) locations = new ArrayList<VOLocation>();
         VOLocation location = new VOLocation(id);
         location.neighbours = new ArrayList<VOLocation>();
@@ -43,9 +58,25 @@ public class VOMap {
             for (VOLocation loc : locations) {
                 if (loc.id == neighbour) {
                     location.neighbours.add(loc);
+                    if(!loc.neighbours.contains(location))
+                        loc.neighbours.add(location);
                 }
             }
         }
         locations.add(location);
+    }
+
+    @Override
+    public String toString() {
+        String mapStr = "VOMap{locations={";
+        for (VOLocation location : locations) {
+            mapStr += location.toString() + ",";
+        }
+        
+        mapStr = mapStr.substring(0, mapStr.length() - 1);
+        
+        mapStr += "}}";
+        
+        return mapStr; //To change body of generated methods, choose Tools | Templates.
     }
 }
