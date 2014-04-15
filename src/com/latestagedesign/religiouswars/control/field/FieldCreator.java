@@ -41,6 +41,8 @@ public class FieldCreator {
         List<LocationsNode> neighbourNodes;
         List<VOLocation> neighbourLocations;
         int toBorderCount;
+        List<Vec2d> toPordersPoints;
+        Vec2d point;
     }
     
     private static Map<VOMap.MapSize, VOMap> MapGraphs;
@@ -228,9 +230,223 @@ public class FieldCreator {
             nodeGraph.addAll(tempNodes);
         }
         
+        ArrayList<ArrayList<LocationsNode>> nodeCycles = new ArrayList<ArrayList<LocationsNode>>();
+        
+        ArrayList<LocationsNode> notCycledNodes = new ArrayList<LocationsNode>();
+        
+        for(LocationsNode n : nodeGraph){
+            if(n.neighbourNodes.isEmpty()){
+               notCycledNodes.add(n);
+            }
+            else{
+                boolean assigned = false;
+                for(ArrayList<LocationsNode> c : nodeCycles){
+                    if(NodeNeigboursInArray(c, n, new ArrayList<LocationsNode>())){
+                        assigned = true;
+                        c.add(n);
+                    }
+                }
+                if(!assigned){
+                    ArrayList<LocationsNode> nodeCycle = new ArrayList<LocationsNode>();
+                    nodeCycle.add(n);
+                    nodeCycles.add(nodeCycle);
+                }
+            }
+        }
+        
+        nodeCycles = SortNodeCycles(nodeCycles, notCycledNodes);
+        notCycledNodes = SortNotCycledNode(nodeCycles, notCycledNodes);
+        
+        ArrayList<Vec2d> sides = new ArrayList<Vec2d>(nodeCycles.size());
+        
+        float totalSize = 0;
+        
+        for (ArrayList<LocationsNode> nodeCycle : nodeCycles) {
+            totalSize += nodeCycle.size();
+        }
+        
+        float prevSize = 0;
+        
+        for(int i = 0; i < nodeCycles.size(); i++){
+            sides.set(i, new Vec2d(prevSize, prevSize + totalSize/nodeCycles.get(i).size()));
+            prevSize += totalSize/nodeCycles.get(i).size();
+        }
+        
+        for(int i = 0; i < nodeCycles.size(); i++){
+            ArrayList<LocationsNode> borders = new ArrayList<LocationsNode>();
+            for(LocationsNode loc : nodeCycles.get(i)){
+                if(loc.toBorderCount > 0){
+                    borders.add(loc);
+                }
+            }
+            
+            float horWidht = (float) (sides.get(i).y - sides.get(i).x);
+            horWidht *= 0.4;
+            
+            float centerShift = (float) (sides.get(i).y - horWidht * 2.5 * 0.5);
+            
+            ArrayList<Vec2d> borderPoints = new ArrayList<Vec2d>();
+            
+            for(int j = 0; i < borders.size(); j++){
+                borderPoints.add(new Vec2d(centerShift + Math.sin(Math.PI * ((float)j)/(float)borders.size()), 0.5 + Math.cos(Math.PI * ((float)j)/(float)borders.size())));
+            }
+            
+            
+        }
+        
+        
+        
+        
+        
+        for(VOLocation loc : map.locations){
+            VOFieldLocation fLoc = new VOFieldLocation();
+            fLoc.data = loc;
+            fLoc.points = new ArrayList<Vec2d>();
+            
+            
+        }
         
         
         return locations;
+    }
+    
+    private static ArrayList<ArrayList<LocationsNode>> SortNodeCycles(ArrayList<ArrayList<LocationsNode>> nodeCycles, ArrayList<LocationsNode> notCycledNodes){
+        if(notCycledNodes.isEmpty()) return nodeCycles;
+        
+        ArrayList<ArrayList<LocationsNode>> newArr = new ArrayList<ArrayList<LocationsNode>>(nodeCycles.size());
+        ArrayList<LocationsNode> newNCArr = new ArrayList<LocationsNode>(notCycledNodes.size());
+        
+        for(ArrayList<LocationsNode> c : nodeCycles){
+            int count = 0;
+            LocationsNode neighNode = null;
+            for(LocationsNode n : notCycledNodes){
+                for(VOLocation loc : n.neighbourLocations){
+                    if(NodeNeigbourLocInArray(c, loc)){
+                        count++;
+                        neighNode = n;
+                    }
+                }
+            }
+            
+            if(count < 0){
+               newArr.add(c);
+               if(neighNode != null){
+                   newNCArr.add(neighNode);
+               }
+               break;
+            }
+        }
+        
+        LocationsNode borderNode = newNCArr.get(0);
+        
+        for(int i = 1; i < newArr.size(); i++){
+            for(ArrayList<LocationsNode> c : nodeCycles){
+                for(VOLocation loc : borderNode.neighbourLocations){
+                    if(NodeNeigbourLocInArray(c, loc) && !NodeNeigbourLocInArray(newArr.get(i - 1), loc)){
+                        newArr.set(i, c);
+                    }
+                }
+            }
+            
+            for(LocationsNode n : notCycledNodes){
+                for(VOLocation loc : n.neighbourLocations){
+                    if(NodeNeigbourLocInArray(newArr.get(i), loc) && !newNCArr.contains(n)){
+                        newNCArr.set(i, n);
+                    }
+                }
+            }
+            
+            if(i < newNCArr.size())
+                borderNode = newNCArr.get(i);
+            else
+                borderNode = null;
+        }
+        
+        return newArr;
+    }
+    
+    private static ArrayList<LocationsNode> SortNotCycledNode(ArrayList<ArrayList<LocationsNode>> nodeCycles,ArrayList<LocationsNode> notCycledNodes){
+        if(notCycledNodes.isEmpty()) return notCycledNodes;
+        
+        ArrayList<ArrayList<LocationsNode>> newArr = new ArrayList<ArrayList<LocationsNode>>(nodeCycles.size());
+        ArrayList<LocationsNode> newNCArr = new ArrayList<LocationsNode>(notCycledNodes.size());
+        
+        for(ArrayList<LocationsNode> c : nodeCycles){
+            int count = 0;
+            LocationsNode neighNode = null;
+            for(LocationsNode n : notCycledNodes){
+                for(VOLocation loc : n.neighbourLocations){
+                    if(NodeNeigbourLocInArray(c, loc)){
+                        count++;
+                        neighNode = n;
+                    }
+                }
+            }
+            
+            if(count < 0){
+               newArr.add(c);
+               if(neighNode != null){
+                   newNCArr.add(neighNode);
+               }
+               break;
+            }
+        }
+        
+        LocationsNode borderNode = newNCArr.get(0);
+        
+        for(int i = 1; i < newArr.size(); i++){
+            for(ArrayList<LocationsNode> c : nodeCycles){
+                for(VOLocation loc : borderNode.neighbourLocations){
+                    if(NodeNeigbourLocInArray(c, loc) && !NodeNeigbourLocInArray(newArr.get(i - 1), loc)){
+                        newArr.set(i, c);
+                    }
+                }
+            }
+            
+            for(LocationsNode n : notCycledNodes){
+                for(VOLocation loc : n.neighbourLocations){
+                    if(NodeNeigbourLocInArray(newArr.get(i), loc) && !newNCArr.contains(n)){
+                        newNCArr.set(i, n);
+                    }
+                }
+            }
+            
+            if(i < newNCArr.size())
+                borderNode = newNCArr.get(i);
+            else
+                borderNode = null;
+        }
+        
+        return newNCArr;
+    }
+    
+    private static boolean NodeNeigboursInArray(ArrayList<LocationsNode> list, LocationsNode node, ArrayList<LocationsNode> checked){
+        
+        if(list.contains(node))return true;
+        
+        for(LocationsNode neigh : node.neighbourNodes){
+            if(list.contains(neigh)){
+                return true;
+            }
+        }
+        
+        checked.add(node);
+        
+        for(LocationsNode neigh : node.neighbourNodes){
+            if(!checked.contains(node)){
+                if(NodeNeigboursInArray(list, neigh, checked)) return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private static boolean NodeNeigbourLocInArray(ArrayList<LocationsNode> list, VOLocation loc){
+        for(LocationsNode n : list){
+            if(n.neighbourLocations.contains(loc)) return true;
+        }
+        
+        return false;
     }
     
     private static List<ArrayList<Integer>> GetAllCycles(VOMap map){
