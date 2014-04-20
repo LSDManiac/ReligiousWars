@@ -19,8 +19,10 @@
 
 package com.latestagedesign.religiouswars.model.VOClasses;
 
+import com.sun.javafx.geom.Vec2f;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.util.Pair;
 
 public class VOMap {
     public enum MapSize{
@@ -50,7 +52,7 @@ public class VOMap {
         return null;
     }
     
-    public void AddLocation(int id, List<Integer> neighbours, int weight){
+    public void AddLocation(int id, List<Integer> neighbours, int weight, ArrayList<Pair<Vec2f, Vec2f>> _borders){
         if(locations == null) locations = new ArrayList<VOLocation>();
         VOLocation location = new VOLocation(id);
         location.neighbours = new ArrayList<VOLocation>();
@@ -63,6 +65,10 @@ public class VOMap {
                 }
             }
         }
+        
+        location.CreateFieldLocation();
+        location.borders = _borders;
+        
         locations.add(location);
     }
 

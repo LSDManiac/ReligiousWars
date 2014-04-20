@@ -21,6 +21,7 @@ package com.latestagedesign.religiouswars.control.field;
 
 import com.latestagedesign.religiouswars.control.exceptions.InitializationException;
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
+import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.GameField;
 import java.util.ArrayList;
@@ -45,12 +46,18 @@ public class FieldController {
     public void Init(GameField _field) throws InitializationException{
         if(isInited)
             throw new InitializationException(InitializationException.ExceptionType.FIELD_CONTROLLER_ALREADY_INITED);
-        
+        this.field = _field;
         
     }
     
     public void CreateField(){
-        curMap = FieldCreator.CreateMap(1, VOMap.MapSize.USA);
-        field.fieldLocations = FieldCreator.CreateFieldLocations(curMap);
+        FieldCreator.CreateMap(1, VOMap.MapSize.USA);
+    }
+    
+    public void OnMapLoadingComplete(){
+        field.fieldLocations = new ArrayList<VOFieldLocation>();
+        for(VOLocation l : curMap.locations){
+            field.fieldLocations.add(l.fLoc);
+        }
     }
 }

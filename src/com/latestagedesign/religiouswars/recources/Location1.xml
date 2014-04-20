@@ -1,77 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <locations>
     <location id = "1" weight = "1">
-        <heighbour>2</heighbour>
-        <heighbour>3</heighbour>
-        <heighbour>4</heighbour>
+        <border x1 = "0" y1 = "0.5" x2 = "0.5" y2 = "0"/>
+        <border x1 = "0" y1 = "0.5" x2 = "0" y2 = "0"/>
+        <border x1 = "0" y1 = "0" x2 = "0.5" y2 = "0"/>
         <heighbour>5</heighbour>
-        <heighbour>6</heighbour>
-        <heighbour>7</heighbour>
-        <heighbour>8</heighbour>
-        <heighbour>9</heighbour>
     </location>
     <location id = "2" weight = "1">
-        <heighbour>1</heighbour>
-        <heighbour>3</heighbour>
-        <heighbour>9</heighbour>
-        <heighbour>10</heighbour>
+        <border x1 = "1" y1 = "0.5" x2 = "0.5" y2 = "0"/>
+        <border x1 = "1" y1 = "0.5" x2 = "1" y2 = "0"/>
+        <border x1 = "1" y1 = "0" x2 = "0.5" y2 = "0"/>
+        <heighbour>5</heighbour>
     </location>
     <location id = "3" weight = "1">
-        <heighbour>1</heighbour>
-        <heighbour>2</heighbour>
-        <heighbour>4</heighbour>
-        <heighbour>10</heighbour>
+        <border x1 = "0" y1 = "0.5" x2 = "0.5" y2 = "1"/>
+        <border x1 = "0" y1 = "0.5" x2 = "0" y2 = "1"/>
+        <border x1 = "0" y1 = "1" x2 = "0.5" y2 = "1"/>
+        <heighbour>5</heighbour>
     </location>
     <location id = "4" weight = "1">
-        <heighbour>1</heighbour>
-        <heighbour>3</heighbour>
+        <border x1 = "1" y1 = "0.5" x2 = "0.5" y2 = "1"/>
+        <border x1 = "1" y1 = "0.5" x2 = "1" y2 = "1"/>
+        <border x1 = "1" y1 = "1" x2 = "0.5" y2 = "1"/>
         <heighbour>5</heighbour>
-        <heighbour>11</heighbour>
     </location>
     <location id = "5" weight = "1">
+        <border x1 = "0" y1 = "0.5" x2 = "0.5" y2 = "0"/>
+        <border x1 = "1" y1 = "0.5" x2 = "0.5" y2 = "0"/>
+        <border x1 = "0" y1 = "0.5" x2 = "0.5" y2 = "1"/>
+        <border x1 = "1" y1 = "0.5" x2 = "0.5" y2 = "1"/>
         <heighbour>1</heighbour>
-        <heighbour>4</heighbour>
-        <heighbour>6</heighbour>
-        <heighbour>11</heighbour>
-    </location>
-    <location id = "6" weight = "1">
-        <heighbour>1</heighbour>
-        <heighbour>5</heighbour>
-        <heighbour>7</heighbour>
-        <heighbour>13</heighbour>
-    </location>
-    <location id = "7" weight = "1">
-        <heighbour>1</heighbour>
-        <heighbour>6</heighbour>
-        <heighbour>8</heighbour>
-        <heighbour>13</heighbour>
-    </location>
-    <location id = "8" weight = "1">
-        <heighbour>1</heighbour>
-        <heighbour>7</heighbour>
-        <heighbour>9</heighbour>
-        <heighbour>12</heighbour>
-    </location>
-    <location id = "9" weight = "1">
-        <heighbour>1</heighbour>
-        <heighbour>2</heighbour>
-        <heighbour>8</heighbour>
-        <heighbour>12</heighbour>
-    </location>
-    <location id = "10" weight = "1">
         <heighbour>2</heighbour>
         <heighbour>3</heighbour>
-    </location>
-    <location id = "11" weight = "1">
         <heighbour>4</heighbour>
-        <heighbour>5</heighbour>
-    </location>
-    <location id = "12" weight = "1">
-        <heighbour>8</heighbour>
-        <heighbour>9</heighbour>
-    </location>
-    <location id = "13" weight = "1">
-        <heighbour>6</heighbour>
-        <heighbour>7</heighbour>
     </location>
 </locations>

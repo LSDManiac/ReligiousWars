@@ -19,7 +19,10 @@
 
 package com.latestagedesign.religiouswars.model.VOClasses;
 
+import com.sun.javafx.geom.Vec2f;
+import java.util.ArrayList;
 import java.util.List;
+import javafx.util.Pair;
 
 public class VOLocation {
     
@@ -27,9 +30,14 @@ public class VOLocation {
     public List<VOLocation> neighbours;
     public int weight;
     
+    public ArrayList<Pair<Vec2f, Vec2f>> borders;
+    
+    public VOFieldLocation fLoc;
+    
     public VOLocation Clone(List<VOLocation> locations){
         VOLocation clone = new VOLocation(id);
         clone.weight = weight;
+        clone.neighbours = new ArrayList<VOLocation>();
         
         for (VOLocation location : locations) {
             for (VOLocation neighbour : neighbours) {
@@ -41,6 +49,9 @@ public class VOLocation {
                 }
             }
         }
+        
+        clone.borders = new ArrayList<Pair<Vec2f, Vec2f>>(borders);
+        clone.CreateFieldLocation();
         
         return clone;
     }
@@ -58,7 +69,12 @@ public class VOLocation {
         
         return null;
     }
-
+    
+    public void CreateFieldLocation(){
+        fLoc = new VOFieldLocation();
+        fLoc.data = this;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof VOLocation)) return false;

@@ -19,13 +19,12 @@
 
 package com.latestagedesign.religiouswars.model.VOClasses;
 
-import com.sun.javafx.geom.Vec2d;
-import java.util.List;
+import com.sun.javafx.geom.Vec2f;
+import java.util.ArrayList;
+import javafx.util.Pair;
 
 public class VOFieldLocation {
     public VOLocation data;
-    
-    public List<Vec2d> points;
     
     public VOFieldLocation(){}
 }

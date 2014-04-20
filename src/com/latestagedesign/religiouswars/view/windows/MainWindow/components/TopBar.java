@@ -19,17 +19,23 @@
 
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
+import com.latestagedesign.religiouswars.control.field.FieldController;
+import com.latestagedesign.religiouswars.control.field.FieldCreator;
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-public class TopBar extends JComponent {
+public class TopBar extends JComponent implements ActionListener{
     
     public TopBar(){
+        Button b = new Button("BACK");
+        b.addActionListener(this);
         this.setLayout(new BorderLayout());
-        add(new Button("back"), BorderLayout.WEST);
+        add(b, BorderLayout.WEST);
         JPanel leftContainer = new JPanel();
         leftContainer.setLayout(new BoxLayout(leftContainer, BoxLayout.LINE_AXIS));
         leftContainer.add(new Button("plus"));
@@ -41,5 +47,9 @@ public class TopBar extends JComponent {
         
         
     }
-    
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        FieldController.getinstance().CreateField();
+    }
 }
