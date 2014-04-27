@@ -35,10 +35,22 @@ public class FieldController {
         return instance;
     }
     
+    public enum ControllerStates{
+        NOTHING,
+        BUILDING,
+        ATTACKING
+    }
+    
     private GameField field;
     private Boolean isInited = false;
     
+    public ControllerStates curState = ControllerStates.NOTHING;
+    
     public VOMap curMap;
+    
+    public int selectedBuildLocation;
+    public int selectedAttackedLocation;
+    public int selectedAttackingLocation;
     
     public FieldController(){
     }
@@ -59,5 +71,35 @@ public class FieldController {
         for(VOLocation l : curMap.locations){
             field.fieldLocations.add(l.fLoc);
         }
+    }
+    
+    public void SetLocationsSelected(int mDownLocId, int mUpLocId){
+        if(mDownLocId == -1 || mUpLocId == -1){
+            SetAllLocationsUnselected();
+            return;
+        }
+        
+        if(mDownLocId == mUpLocId){
+            curState = ControllerStates.BUILDING;
+            selectedBuildLocation = mDownLocId;
+        }
+        else{
+            curState = ControllerStates.ATTACKING;
+            if(curMap.GetLocationById(mDownLocId).GetNeighbourById(mUpLocId) != null){
+                selectedAttackingLocation = mDownLocId;
+                selectedAttackedLocation = mUpLocId;
+            }
+            else{
+                SetAllLocationsUnselected();
+            }
+        }
+        field.repaint();
+    }
+    
+    public void SetAllLocationsUnselected(){
+        curState = ControllerStates.NOTHING;
+        selectedBuildLocation = -1;
+        selectedAttackedLocation = -1;
+        selectedAttackingLocation = -1;
     }
 }

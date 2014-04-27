@@ -90,7 +90,7 @@ public class VOLocation {
             locStr += neighbour.id + ",";
         }
         
-        if(neighbours.size() != 0)
+        if(!neighbours.isEmpty())
             locStr = locStr.substring(0, locStr.length() - 1);
         
         locStr += "}}";
