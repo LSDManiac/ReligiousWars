@@ -20,12 +20,13 @@
 package com.latestagedesign.religiouswars.view.windows.MainWindow;
 
 import com.latestagedesign.religiouswars.control.field.FieldController;
-import com.latestagedesign.religiouswars.view.gui.UIImage;
 import com.latestagedesign.religiouswars.model.Localization;
+import com.latestagedesign.religiouswars.view.gui.UIImage;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.GameField;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.TopBar;
 import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -40,20 +41,24 @@ import org.openide.windows.TopComponent;
 @TopComponent.OpenActionRegistration(displayName = "Religious Wars", preferredID = "MainWindow")
 public class MainWindow extends TopComponent{
     
+    private static MainWindow _instance;
+    public static MainWindow getinstance(){return _instance;}
+    
     private UIImage nataPic = new UIImage("images/nata.jpg");
     private javax.swing.JButton jButton1;
     
     private GameField field;
     
     public MainWindow() {
+        _instance = this;
         setDisplayName(Localization.Get("#religious_wars"));
         
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         try{
             field = new GameField();
-            add(new TopBar(), BorderLayout.NORTH);
-            add(field, BorderLayout.CENTER);
-            add(new BotBar(), BorderLayout.SOUTH);
+            add(new TopBar());
+            add(field);
+            add(BotBar.getinstance());
             
             FieldController.getinstance().CreateField();
         }

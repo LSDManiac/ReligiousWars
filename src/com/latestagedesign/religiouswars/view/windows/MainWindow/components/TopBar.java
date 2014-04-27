@@ -23,6 +23,7 @@ import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.control.field.FieldCreator;
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -30,6 +31,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 public class TopBar extends JComponent implements ActionListener{
+    
+    private static int TOP_BAR_HEIGHT = 30;
     
     public TopBar(){
         Button b = new Button("BACK");
@@ -44,8 +47,9 @@ public class TopBar extends JComponent implements ActionListener{
         add(leftContainer, BorderLayout.EAST);
         add(new Button("timer"), BorderLayout.CENTER);
         
-        
-        
+        this.setMinimumSize(new Dimension(Short.MIN_VALUE, TOP_BAR_HEIGHT));
+        this.setMaximumSize(new Dimension(Short.MAX_VALUE, TOP_BAR_HEIGHT));
+        this.setPreferredSize(new Dimension(Short.MAX_VALUE, TOP_BAR_HEIGHT));
     }
 
     @Override

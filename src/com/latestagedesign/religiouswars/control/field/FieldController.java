@@ -23,6 +23,7 @@ import com.latestagedesign.religiouswars.control.exceptions.InitializationExcept
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.GameField;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +75,10 @@ public class FieldController {
     }
     
     public void SetLocationsSelected(int mDownLocId, int mUpLocId){
-        if(mDownLocId == -1 || mUpLocId == -1){
+        if(mDownLocId == -1 || mUpLocId == -1 || (curState != ControllerStates.NOTHING && mDownLocId == mUpLocId)){
             SetAllLocationsUnselected();
+            field.repaint();
+            BotBar.getinstance().RecountState();
             return;
         }
         
@@ -93,6 +96,8 @@ public class FieldController {
                 SetAllLocationsUnselected();
             }
         }
+        
+        BotBar.getinstance().RecountState();
         field.repaint();
     }
     
@@ -101,5 +106,9 @@ public class FieldController {
         selectedBuildLocation = -1;
         selectedAttackedLocation = -1;
         selectedAttackingLocation = -1;
+    }
+    
+    public void FireBuild(VOFieldLocation.BuildingType buildingType){
+        
     }
 }

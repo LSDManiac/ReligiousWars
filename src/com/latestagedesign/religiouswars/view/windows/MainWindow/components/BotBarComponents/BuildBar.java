@@ -19,7 +19,8 @@
 
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBarComponents;
 
-import com.latestagedesign.religiouswars.control.gui.BuildBarController;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
+import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 
@@ -29,10 +30,9 @@ public class BuildBar extends JComponent{
     private BuildingUpgradeButton barrackUpgrade;
     private BuildingUpgradeButton churchUpgrade;
     
-    private BuildBarController controller;
-    
     public BuildBar(){
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
         cityUpgrade = new BuildingUpgradeButton();
         barrackUpgrade = new BuildingUpgradeButton();
@@ -42,7 +42,8 @@ public class BuildBar extends JComponent{
         add(barrackUpgrade);
         add(churchUpgrade);
         
-        controller = new BuildBarController();
-        controller.Init(this);
+        this.setMinimumSize(new Dimension(Short.MIN_VALUE, BotBar.BOT_BAR_HEIGHT));
+        this.setMaximumSize(new Dimension(Short.MAX_VALUE, BotBar.BOT_BAR_HEIGHT));
+        this.setPreferredSize(new Dimension(Short.MAX_VALUE, BotBar.BOT_BAR_HEIGHT));
     }
 }
