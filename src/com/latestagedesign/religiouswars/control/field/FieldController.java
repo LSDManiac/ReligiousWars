@@ -19,6 +19,7 @@
 
 package com.latestagedesign.religiouswars.control.field;
 
+import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.control.exceptions.InitializationException;
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
@@ -53,8 +54,7 @@ public class FieldController {
     public int selectedAttackedLocation;
     public int selectedAttackingLocation;
     
-    public FieldController(){
-    }
+    public FieldController(){}
     
     public void Init(GameField _field) throws InitializationException{
         if(isInited)
@@ -63,8 +63,8 @@ public class FieldController {
         
     }
     
-    public void CreateField(){
-        FieldCreator.CreateMap(1, VOMap.MapSize.USA);
+    public void CreateField(int playerNum, VOMap.MapSize mapSize){
+        FieldCreator.CreateMap(playerNum, mapSize);
     }
     
     public void OnMapLoadingComplete(){
@@ -72,10 +72,21 @@ public class FieldController {
         for(VOLocation l : curMap.locations){
             field.fieldLocations.add(l.fLoc);
         }
+        RandomizePlayersPosition();
+    }
+    
+    private void RandomizePlayersPosition(){
+        for(int i = 0; i < PlayersController.getinstance().GetPlayersNum(); i++){
+            int locNum = (int)Math.floor(Math.random() * curMap.locations.size());
+            
+            System.out.println(locNum + " " + PlayersController.getinstance().GetPlayerIdOnPos(i));
+            curMap.locations.get(locNum).fLoc.setcurOwnerId(PlayersController.getinstance().GetPlayerIdOnPos(i));
+        }
     }
     
     public void SetLocationsSelected(int mDownLocId, int mUpLocId){
-        if(mDownLocId == -1 || mUpLocId == -1 || (curState != ControllerStates.NOTHING && mDownLocId == mUpLocId)){
+        if(mDownLocId == -1 || mUpLocId == -1 || (curState != ControllerStates.NOTHING && mDownLocId == mUpLocId)
+                || (curMap.GetLocationById(mDownLocId).fLoc.curOwnerId != PlayersController.getinstance().getCurrentPlayerId())){
             SetAllLocationsUnselected();
             field.repaint();
             BotBar.getinstance().RecountState();

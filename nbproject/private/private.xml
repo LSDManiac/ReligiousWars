@@ -3,16 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/view/windows/MainWindow/components/BotBarComponents/BuildBar.java</file>
             <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/model/VOClasses/VOFieldLocation.java</file>
             <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/control/field/FieldController.java</file>
             <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/view/windows/MainWindow/components/TopBar.java</file>
-            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/model/VOClasses/VOMap.java</file>
+            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/view/windows/MainWindow/components/BotBar.java</file>
             <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/view/windows/MainWindow/components/GameField.java</file>
             <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/view/windows/MainWindow/MainWindow.java</file>
-            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/control/field/FieldCreator.java</file>
-            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/control/exceptions/InitializationException.java</file>
-            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/model/VOClasses/VOLocation.java</file>
-            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/recources/Location1.xml</file>
+            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/view/windows/MainWindow/components/BotBarComponents/AttackBar.java</file>
+            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/view/windows/MainWindow/components/BotBarComponents/BuildingUpgradeButton.java</file>
+            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/control/Events/ControlEvent.java</file>
+            <file>file:/D:/Projects/ReligiousWars/ReligiousWars/src/com/latestagedesign/religiouswars/control/Events/ControlEventListener.java</file>
         </group>
     </open-files>
 </project-private>

@@ -54,6 +54,6 @@ public class TopBar extends JComponent implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        FieldController.getinstance().CreateField();
+        //FieldController.getinstance().CreateField();
     }
 }

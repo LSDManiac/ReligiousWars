@@ -19,8 +19,10 @@
 
 package com.latestagedesign.religiouswars.view.windows.MainWindow;
 
+import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.model.Localization;
+import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
 import com.latestagedesign.religiouswars.view.gui.UIImage;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.GameField;
@@ -60,10 +62,13 @@ public class MainWindow extends TopComponent{
             add(field);
             add(BotBar.getinstance());
             
-            FieldController.getinstance().CreateField();
+            int playersNum = 3;
+            
+            PlayersController.getinstance().CreatePlayers(playersNum);
+            FieldController.getinstance().CreateField(playersNum, VOMap.MapSize.USA);
+            
         }
         catch(Exception e){}
-        //this.add(jButton1, BorderLayout.CENTER);
         
     }
     

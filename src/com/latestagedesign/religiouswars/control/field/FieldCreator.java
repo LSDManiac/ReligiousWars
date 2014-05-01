@@ -19,6 +19,7 @@
 
 package com.latestagedesign.religiouswars.control.field;
 
+import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
@@ -50,11 +51,6 @@ public class FieldCreator {
     
     public static void CreateMap(int playerNum, VOMap.MapSize size){
         VOMap map = CreateMapGraph(size);
-        
-        // TODO: Set Players Start Locations
-        
-        // TODO: Set start locations units
-        
         
         FieldController.getinstance().curMap = map;
         

@@ -19,6 +19,7 @@
 
 package com.latestagedesign.religiouswars.model.VOClasses;
 
+import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.control.field.UnitController;
 import com.latestagedesign.religiouswars.model.Constants;
 import java.awt.Color;
@@ -45,14 +46,19 @@ public class VOFieldLocation {
     
     public Color curColor = Color.gray;
     
-    public String curPlayer;
+    public int curOwnerId = -1;
+    
+    public void setcurOwnerId(int id){
+        curOwnerId = id;
+        curColor = PlayersController.getinstance().GetPlayerColorById(id);
+    }
     
     public VOFieldLocation(){
-        unitsOnLocation = new HashMap<String, HashMap<UnitController.UnitType, Integer>>();
+        unitsOnLocation = new HashMap<Integer, HashMap<UnitController.UnitType, Integer>>();
         buildingsOnLocation = new HashMap<BuildingType, Integer>();
     }
     
-    public HashMap<String, HashMap<UnitController.UnitType, Integer>> unitsOnLocation;
+    public HashMap<Integer, HashMap<UnitController.UnitType, Integer>> unitsOnLocation;
     
     public HashMap<BuildingType, Integer> buildingsOnLocation;
     
@@ -68,61 +74,61 @@ public class VOFieldLocation {
     
     private void ProcessBuildingAction(BuildingType type, int level){
         if(type == BuildingType.FARM){
-            if(!unitsOnLocation.containsKey(curPlayer)){
-                unitsOnLocation.put(curPlayer, new HashMap<UnitController.UnitType, Integer>());
+            if(!unitsOnLocation.containsKey(curOwnerId)){
+                unitsOnLocation.put(curOwnerId, new HashMap<UnitController.UnitType, Integer>());
             }
             
-            if(!unitsOnLocation.get(curPlayer).containsKey(UnitController.UnitType.PEASANT)){
-                unitsOnLocation.get(curPlayer).put(UnitController.UnitType.PEASANT, 0);
+            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.PEASANT)){
+                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, 0);
             }
-            int newCount = unitsOnLocation.get(curPlayer).get(UnitController.UnitType.PEASANT)
+            int newCount = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT)
                     + level * data.weight * Constants.FARM_MULTIPLICATOR;
             
-            unitsOnLocation.get(curPlayer).put(UnitController.UnitType.PEASANT, newCount);
+            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, newCount);
         }
         
         if(type == BuildingType.BARRACK){
-            if(!unitsOnLocation.containsKey(curPlayer)){
-                unitsOnLocation.put(curPlayer, new HashMap<UnitController.UnitType, Integer>());
+            if(!unitsOnLocation.containsKey(curOwnerId)){
+                unitsOnLocation.put(curOwnerId, new HashMap<UnitController.UnitType, Integer>());
             }
             
-            if(!unitsOnLocation.get(curPlayer).containsKey(UnitController.UnitType.PEASANT)){
-                unitsOnLocation.get(curPlayer).put(UnitController.UnitType.PEASANT, 0);
+            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.PEASANT)){
+                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, 0);
             }
             
-            if(!unitsOnLocation.get(curPlayer).containsKey(UnitController.UnitType.SOLDIER)){
-                unitsOnLocation.get(curPlayer).put(UnitController.UnitType.SOLDIER, 0);
+            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.SOLDIER)){
+                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.SOLDIER, 0);
             }
-            int convertCount = Math.min(unitsOnLocation.get(curPlayer).get(UnitController.UnitType.PEASANT),
+            int convertCount = Math.min(unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT),
                     level * data.weight * Constants.BARRACK_MULTIPLICATOR);
             
-            int newPeasants = unitsOnLocation.get(curPlayer).get(UnitController.UnitType.PEASANT) - convertCount;
-            int newSoldiers = unitsOnLocation.get(curPlayer).get(UnitController.UnitType.SOLDIER) + convertCount;
+            int newPeasants = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT) - convertCount;
+            int newSoldiers = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.SOLDIER) + convertCount;
             
-            unitsOnLocation.get(curPlayer).put(UnitController.UnitType.PEASANT, newPeasants);
-            unitsOnLocation.get(curPlayer).put(UnitController.UnitType.SOLDIER, newSoldiers);
+            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, newPeasants);
+            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.SOLDIER, newSoldiers);
         }
         
         if(type == BuildingType.TEMPLE){
-            if(!unitsOnLocation.containsKey(curPlayer)){
-                unitsOnLocation.put(curPlayer, new HashMap<UnitController.UnitType, Integer>());
+            if(!unitsOnLocation.containsKey(curOwnerId)){
+                unitsOnLocation.put(curOwnerId, new HashMap<UnitController.UnitType, Integer>());
             }
             
-            if(!unitsOnLocation.get(curPlayer).containsKey(UnitController.UnitType.PEASANT)){
-                unitsOnLocation.get(curPlayer).put(UnitController.UnitType.PEASANT, 0);
+            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.PEASANT)){
+                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, 0);
             }
             
-            if(!unitsOnLocation.get(curPlayer).containsKey(UnitController.UnitType.PRIEST)){
-                unitsOnLocation.get(curPlayer).put(UnitController.UnitType.PRIEST, 0);
+            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.PRIEST)){
+                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PRIEST, 0);
             }
-            int convertCount = Math.min(unitsOnLocation.get(curPlayer).get(UnitController.UnitType.PEASANT),
+            int convertCount = Math.min(unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT),
                     level * data.weight * Constants.BARRACK_MULTIPLICATOR);
             
-            int newPeasants = unitsOnLocation.get(curPlayer).get(UnitController.UnitType.PEASANT) - convertCount;
-            int newPriests = unitsOnLocation.get(curPlayer).get(UnitController.UnitType.PRIEST) + convertCount;
+            int newPeasants = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT) - convertCount;
+            int newPriests = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PRIEST) + convertCount;
             
-            unitsOnLocation.get(curPlayer).put(UnitController.UnitType.PEASANT, newPeasants);
-            unitsOnLocation.get(curPlayer).put(UnitController.UnitType.PRIEST, newPriests);
+            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, newPeasants);
+            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PRIEST, newPriests);
         }
     }
 }
