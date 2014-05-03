@@ -6,6 +6,8 @@
 
 package com.latestagedesign.religiouswars.control.field;
 
+import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
+
 /**
  *
  * @author Greg
@@ -17,5 +19,10 @@ public class UnitController {
         PRIEST
     }
     
-    
+    public static UnitType GetUnitTypeByBuildingType(VOFieldLocation.BuildingType type){
+        if(type == VOFieldLocation.BuildingType.BARRACK) return UnitType.SOLDIER;
+        if(type == VOFieldLocation.BuildingType.FARM) return UnitType.PEASANT;
+        if(type == VOFieldLocation.BuildingType.TEMPLE) return UnitType.PRIEST;
+        return UnitType.PEASANT;
+    }
 }

@@ -27,7 +27,6 @@ import com.latestagedesign.religiouswars.view.gui.UIImage;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.GameField;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.TopBar;
-import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -46,9 +45,6 @@ public class MainWindow extends TopComponent{
     private static MainWindow _instance;
     public static MainWindow getinstance(){return _instance;}
     
-    private UIImage nataPic = new UIImage("images/nata.jpg");
-    private javax.swing.JButton jButton1;
-    
     private GameField field;
     
     public MainWindow() {
@@ -58,7 +54,7 @@ public class MainWindow extends TopComponent{
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         try{
             field = new GameField();
-            add(new TopBar());
+            add(TopBar.getinstance());
             add(field);
             add(BotBar.getinstance());
             

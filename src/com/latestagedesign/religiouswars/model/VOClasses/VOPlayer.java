@@ -26,4 +26,5 @@ public class VOPlayer {
     public int id;
     public String name;
     public Color playerColor;
+    public Color playerTerritoryColor;
 }

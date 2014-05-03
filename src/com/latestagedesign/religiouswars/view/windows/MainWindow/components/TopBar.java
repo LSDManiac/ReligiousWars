@@ -21,6 +21,7 @@ package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
 import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.control.field.FieldCreator;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.components.TopBarComponent.TopInfoBar;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Dimension;
@@ -30,30 +31,31 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-public class TopBar extends JComponent implements ActionListener{
+public class TopBar extends JComponent{
     
-    private static int TOP_BAR_HEIGHT = 30;
+    private  static TopBar _instance;
+    public static TopBar getinstance(){
+        if(_instance == null) _instance = new TopBar();
+        return _instance;
+    }
+    
+    public static int TOP_BAR_HEIGHT = 40;
+    
+    private TopInfoBar infobar;
     
     public TopBar(){
-        Button b = new Button("BACK");
-        b.addActionListener(this);
-        this.setLayout(new BorderLayout());
-        add(b, BorderLayout.WEST);
-        JPanel leftContainer = new JPanel();
-        leftContainer.setLayout(new BoxLayout(leftContainer, BoxLayout.LINE_AXIS));
-        leftContainer.add(new Button("plus"));
-        leftContainer.add(new Button("sun"));
-        leftContainer.add(new Button("moon"));
-        add(leftContainer, BorderLayout.EAST);
-        add(new Button("timer"), BorderLayout.CENTER);
+        infobar = new TopInfoBar();
+        
+        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        
+        this.add(infobar);
         
         this.setMinimumSize(new Dimension(Short.MIN_VALUE, TOP_BAR_HEIGHT));
         this.setMaximumSize(new Dimension(Short.MAX_VALUE, TOP_BAR_HEIGHT));
         this.setPreferredSize(new Dimension(Short.MAX_VALUE, TOP_BAR_HEIGHT));
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        //FieldController.getinstance().CreateField();
+    
+    public void RecountState(){
+       infobar.UpdateInfo();
     }
 }

@@ -45,7 +45,7 @@ public class BotBar extends JComponent {
         ATTACK
     }
     
-    public static int BOT_BAR_HEIGHT = 30;
+    public static int BOT_BAR_HEIGHT = 50;
     
     private BotBarStatus curStatus = BotBarStatus.HIDDEN;
     
@@ -89,9 +89,11 @@ public class BotBar extends JComponent {
         switch(newStatus){
             case ATTACK:{
                 attackBar.setVisible(true);
+                attackBar.FireTypeChanged();
             } break;
             case BUILDING:{
                 buildBar.setVisible(true);
+                buildBar.InitBuildButtons();
             } break;
             case HIDDEN:{
                 hiddenBar.setVisible(true);

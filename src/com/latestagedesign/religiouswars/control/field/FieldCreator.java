@@ -100,6 +100,10 @@ public class FieldCreator {
                 int id = Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue());
                 int weight = Integer.parseInt(node.getAttributes().getNamedItem("weight").getNodeValue());
                 
+                boolean isStart = node.getAttributes().getNamedItem("startLocation").getNodeValue().equals("true");
+                
+                //System.out.println("startLocation = '" + node.getAttributes().getNamedItem("startLocation").getNodeValue() + "'");
+                
                 ArrayList<Pair<Vec2f, Vec2f>> lines = new ArrayList<Pair<Vec2f, Vec2f>>();
                 
                 NodeList subNodeList = node.getChildNodes();
@@ -127,7 +131,7 @@ public class FieldCreator {
                     }
                 }
                 
-                map.AddLocation(id, neighbours, weight, lines);
+                map.AddLocation(id, neighbours, weight, lines, isStart);
             }
         }
         catch(Exception e){

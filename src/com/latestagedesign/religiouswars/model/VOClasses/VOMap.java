@@ -52,7 +52,7 @@ public class VOMap {
         return null;
     }
     
-    public void AddLocation(int id, List<Integer> neighbours, int weight, ArrayList<Pair<Vec2f, Vec2f>> _borders){
+    public void AddLocation(int id, List<Integer> neighbours, int weight, ArrayList<Pair<Vec2f, Vec2f>> _borders, boolean isStart){
         if(locations == null) locations = new ArrayList<VOLocation>();
         VOLocation location = new VOLocation(id);
         location.neighbours = new ArrayList<VOLocation>();
@@ -68,6 +68,8 @@ public class VOMap {
         
         location.CreateFieldLocation();
         location.borders = _borders;
+        location.weight = weight;
+        location.isStart = isStart;
         
         locations.add(location);
     }

@@ -44,13 +44,25 @@ public class VOFieldLocation {
     
     public Polygon polygon;
     
-    public Color curColor = Color.gray;
+    public Color curColor = Constants.NOBODY_PROVINCE_COLOR;
     
     public int curOwnerId = -1;
     
     public void setcurOwnerId(int id){
         curOwnerId = id;
-        curColor = PlayersController.getinstance().GetPlayerColorById(id);
+        curColor = PlayersController.getinstance().GetTerritoryPlayerColorById(id);
+        if(!unitsOnLocation.containsKey(id)){
+            unitsOnLocation.put(id, new HashMap<UnitController.UnitType, Integer>());
+        }
+        if(!unitsOnLocation.get(id).containsKey(UnitController.UnitType.PEASANT)){
+            unitsOnLocation.get(id).put(UnitController.UnitType.PRIEST, 0);
+        }
+        if(!unitsOnLocation.get(id).containsKey(UnitController.UnitType.PRIEST)){
+            unitsOnLocation.get(id).put(UnitController.UnitType.PRIEST, 0);
+        }
+        if(!unitsOnLocation.get(id).containsKey(UnitController.UnitType.SOLDIER)){
+            unitsOnLocation.get(id).put(UnitController.UnitType.SOLDIER, 0);
+        }
     }
     
     public VOFieldLocation(){
@@ -62,9 +74,17 @@ public class VOFieldLocation {
     
     public HashMap<BuildingType, Integer> buildingsOnLocation;
     
+    
+    public void BuildOnLocation(BuildingType type){
+        if(!buildingsOnLocation.containsKey(type)){
+            buildingsOnLocation.put(type, 1);
+        }
+        else{
+            buildingsOnLocation.put(type, buildingsOnLocation.get(type) + 1);
+        }
+    }
+    
     public void OnTurn(){
-        
-        
         for (BuildingType buildingOrder : buildingOrder) {
             if (buildingsOnLocation.containsKey(buildingOrder)) {
                 ProcessBuildingAction(buildingOrder, buildingsOnLocation.get(buildingOrder));
@@ -82,7 +102,7 @@ public class VOFieldLocation {
                 unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, 0);
             }
             int newCount = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT)
-                    + level * data.weight * Constants.FARM_MULTIPLICATOR;
+                    + level * getMultiplierByBuildingType(type);
             
             unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, newCount);
         }
@@ -100,7 +120,7 @@ public class VOFieldLocation {
                 unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.SOLDIER, 0);
             }
             int convertCount = Math.min(unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT),
-                    level * data.weight * Constants.BARRACK_MULTIPLICATOR);
+                    level * getMultiplierByBuildingType(type));
             
             int newPeasants = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT) - convertCount;
             int newSoldiers = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.SOLDIER) + convertCount;
@@ -122,7 +142,7 @@ public class VOFieldLocation {
                 unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PRIEST, 0);
             }
             int convertCount = Math.min(unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT),
-                    level * data.weight * Constants.BARRACK_MULTIPLICATOR);
+                    level * getMultiplierByBuildingType(type));
             
             int newPeasants = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT) - convertCount;
             int newPriests = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PRIEST) + convertCount;
@@ -130,5 +150,13 @@ public class VOFieldLocation {
             unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, newPeasants);
             unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PRIEST, newPriests);
         }
+    }
+    
+    public int getMultiplierByBuildingType(BuildingType t){
+        //System.out.println(t + " " + data.weight);
+        if(t == BuildingType.BARRACK) return data.weight * Constants.BARRACK_MULTIPLICATOR;
+        if(t == BuildingType.FARM) return data.weight * Constants.FARM_MULTIPLICATOR;
+        if(t == BuildingType.TEMPLE) return data.weight * Constants.TEMPLE_MULTIPLICATOR;
+        return data.weight;
     }
 }

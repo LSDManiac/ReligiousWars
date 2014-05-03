@@ -26,7 +26,9 @@ import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.GameField;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.components.TopBar;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FieldController {
@@ -71,22 +73,42 @@ public class FieldController {
         field.fieldLocations = new ArrayList<VOFieldLocation>();
         for(VOLocation l : curMap.locations){
             field.fieldLocations.add(l.fLoc);
+            l.fLoc.buildingsOnLocation = new HashMap<VOFieldLocation.BuildingType, Integer>();
+            l.fLoc.buildingsOnLocation.put(VOFieldLocation.BuildingType.FARM, 1);
+            l.fLoc.buildingsOnLocation.put(VOFieldLocation.BuildingType.BARRACK, 1);
+            l.fLoc.buildingsOnLocation.put(VOFieldLocation.BuildingType.TEMPLE, 1);
         }
         RandomizePlayersPosition();
     }
     
     private void RandomizePlayersPosition(){
         for(int i = 0; i < PlayersController.getinstance().GetPlayersNum(); i++){
-            int locNum = (int)Math.floor(Math.random() * curMap.locations.size());
-            
-            System.out.println(locNum + " " + PlayersController.getinstance().GetPlayerIdOnPos(i));
-            curMap.locations.get(locNum).fLoc.setcurOwnerId(PlayersController.getinstance().GetPlayerIdOnPos(i));
+            int locId = GetRandomFreeStartLocationId();
+            if(locId != -1)
+                curMap.GetLocationById(locId).fLoc.setcurOwnerId(PlayersController.getinstance().GetPlayerIdOnPos(i));
         }
+    }
+    
+    private int GetRandomFreeStartLocationId(){
+        ArrayList<Integer> freeLocs = new ArrayList<Integer>();
+        for(VOLocation l : curMap.locations){
+            //System.out.println(l.isStart + " " + l.fLoc.curOwnerId);
+            if(l.isStart && l.fLoc.curOwnerId == -1){
+                freeLocs.add(l.id);
+            }
+        }
+        
+        if(freeLocs.isEmpty())
+            return -1;
+        
+        int num = (int)Math.floor(Math.random() * freeLocs.size());
+        
+        return freeLocs.get(num);
     }
     
     public void SetLocationsSelected(int mDownLocId, int mUpLocId){
         if(mDownLocId == -1 || mUpLocId == -1 || (curState != ControllerStates.NOTHING && mDownLocId == mUpLocId)
-                || (curMap.GetLocationById(mDownLocId).fLoc.curOwnerId != PlayersController.getinstance().getCurrentPlayerId())){
+                || (curMap.GetLocationById(mDownLocId).fLoc.curOwnerId != PlayersController.getinstance().GetCurrentPlayerId())){
             SetAllLocationsUnselected();
             field.repaint();
             BotBar.getinstance().RecountState();
@@ -120,6 +142,20 @@ public class FieldController {
     }
     
     public void FireBuild(VOFieldLocation.BuildingType buildingType){
+        if(curState != ControllerStates.BUILDING) return;
+        curMap.GetLocationById(selectedBuildLocation).fLoc.BuildOnLocation(buildingType);
+        FireTurnEnded();
+    }
+    
+    public void FireTurnEnded(){
+        SetAllLocationsUnselected();
+        BotBar.getinstance().RecountState();
+        for(VOLocation l : curMap.locations){
+            l.fLoc.OnTurn();
+        }
+        field.repaint();
         
+        PlayersController.getinstance().StepToNextPlayer();
+        TopBar.getinstance().RecountState();
     }
 }

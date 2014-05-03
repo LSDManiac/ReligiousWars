@@ -67,7 +67,7 @@ public class GameField extends JComponent{
     
     public void DrawField(Graphics g){
         if(fieldLocations == null || fieldLocations.size() <= 0){
-            System.out.println("fieldLocations == null " + (fieldLocations == null));
+            //System.out.println("fieldLocations == null " + (fieldLocations == null));
             return;
         }
         
@@ -210,7 +210,7 @@ public class GameField extends JComponent{
             }
             mouseDown = true;
             mouseDownLocationId = GetMouseDownLocationId(e.getPoint());
-            System.out.println("mouseDownLocationId = " + mouseDownLocationId);
+            //System.out.println("mouseDownLocationId = " + mouseDownLocationId);
         }
 
         @Override
@@ -222,7 +222,7 @@ public class GameField extends JComponent{
             mouseDown = false;
             
             mouseUpLocationId = GetMouseDownLocationId(e.getPoint());
-            System.out.println("mouseUpLocationId = " + mouseUpLocationId);
+            //System.out.println("mouseUpLocationId = " + mouseUpLocationId);
             
             controller.SetLocationsSelected(mouseDownLocationId, mouseUpLocationId);
         }

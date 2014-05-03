@@ -29,6 +29,7 @@ public class VOLocation {
     public int id;
     public List<VOLocation> neighbours;
     public int weight;
+    public boolean isStart;
     
     public ArrayList<Pair<Vec2f, Vec2f>> borders;
     
@@ -37,6 +38,7 @@ public class VOLocation {
     public VOLocation Clone(List<VOLocation> locations){
         VOLocation clone = new VOLocation(id);
         clone.weight = weight;
+        clone.isStart = isStart;
         clone.neighbours = new ArrayList<VOLocation>();
         
         for (VOLocation location : locations) {

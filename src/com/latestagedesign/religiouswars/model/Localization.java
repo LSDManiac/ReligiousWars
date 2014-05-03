@@ -39,8 +39,10 @@ public class Localization {
         Map<String, Map<String, String>> langs = new HashMap<String, Map<String, String>>();
         langs.put("EN", new HashMap<String, String>());
         langs.get("EN").put("#religious_wars", "Religious Wars");
+        langs.get("EN").put("#top_info_bar_text", "Now %name%'s turn");
         langs.put("RU", new HashMap<String, String>());
         langs.get("RU").put("#religious_wars", "Религиозные Войны");
+        langs.get("RU").put("#top_info_bar_text", "Ход игрока %name%");
         
         return langs;
     }

@@ -24,6 +24,8 @@ public class Constants {
     public static int BORDER_BUILDING_SIZE = 5;
     
     public static int FARM_MULTIPLICATOR = 5;
-    public static int BARRACK_MULTIPLICATOR = 5;
-    public static int TEMPLE_MULTIPLICATOR = 5;
+    public static int BARRACK_MULTIPLICATOR = 1;
+    public static int TEMPLE_MULTIPLICATOR = 1;
+    
+    public static Color NOBODY_PROVINCE_COLOR = new Color(215, 215, 215);
 }
