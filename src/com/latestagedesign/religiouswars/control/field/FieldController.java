@@ -21,9 +21,11 @@ package com.latestagedesign.religiouswars.control.field;
 
 import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.control.exceptions.InitializationException;
+import com.latestagedesign.religiouswars.model.Constants;
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.MainWindow;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.GameField;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.TopBar;
@@ -38,6 +40,8 @@ public class FieldController {
         if(instance == null) instance = new FieldController();
         return instance;
     }
+    
+    public boolean inField = false;
     
     public enum ControllerStates{
         NOTHING,
@@ -78,7 +82,35 @@ public class FieldController {
             l.fLoc.buildingsOnLocation.put(VOFieldLocation.BuildingType.BARRACK, 1);
             l.fLoc.buildingsOnLocation.put(VOFieldLocation.BuildingType.TEMPLE, 1);
         }
+        
         RandomizePlayersPosition();
+        
+        for(VOFieldLocation l : field.fieldLocations){
+            l.unitsOnLocation = new HashMap<Integer, HashMap<UnitController.UnitType, Integer>>();
+            if(l.curOwnerId != -1){
+                l.unitsOnLocation.put(l.curOwnerId, new HashMap<UnitController.UnitType, Integer>());
+                
+                int startPeasants = Constants.START_PEASANT_NUMBER * l.data.weight;
+                int startPriests = Constants.START_PRIEST_NUMBER * l.data.weight;
+                int startSoldiers = Constants.START_SOLDIER_NUMBER * l.data.weight;
+                
+                l.unitsOnLocation.get(l.curOwnerId).put(UnitController.UnitType.PRIEST, startPriests);
+                l.unitsOnLocation.get(l.curOwnerId).put(UnitController.UnitType.PEASANT, startPeasants);
+                l.unitsOnLocation.get(l.curOwnerId).put(UnitController.UnitType.SOLDIER, startSoldiers);
+            }
+            else{
+                l.unitsOnLocation.put(l.curOwnerId, new HashMap<UnitController.UnitType, Integer>());
+                
+                int startPeasants = Constants.START_EMPTY_PEASANT_NUMBER * l.data.weight;
+                
+                l.unitsOnLocation.get(l.curOwnerId).put(UnitController.UnitType.PEASANT, startPeasants);
+                l.unitsOnLocation.get(l.curOwnerId).put(UnitController.UnitType.SOLDIER, 0);
+                l.unitsOnLocation.get(l.curOwnerId).put(UnitController.UnitType.PRIEST, 0);
+            }
+        }
+        
+        inField = true;
+        BotBar.getinstance().RecountState();
     }
     
     private void RandomizePlayersPosition(){
@@ -87,6 +119,15 @@ public class FieldController {
             if(locId != -1)
                 curMap.GetLocationById(locId).fLoc.setcurOwnerId(PlayersController.getinstance().GetPlayerIdOnPos(i));
         }
+    }
+    
+    public int GetPlayerProvinceCount(int id){
+        int c = 0;
+        for(VOLocation l : curMap.locations){
+            if(l.fLoc.curOwnerId == id)
+                c++;
+        }
+        return c;
     }
     
     private int GetRandomFreeStartLocationId(){
@@ -147,6 +188,14 @@ public class FieldController {
         FireTurnEnded();
     }
     
+    public void FireAttack(int count, UnitController.UnitType type){
+        if(curState != ControllerStates.ATTACKING) return;
+        UnitController.MoveUnits(selectedAttackingLocation,
+                selectedAttackedLocation,
+                count, type);
+        FireTurnEnded();
+    }
+    
     public void FireTurnEnded(){
         SetAllLocationsUnselected();
         BotBar.getinstance().RecountState();
@@ -157,5 +206,10 @@ public class FieldController {
         
         PlayersController.getinstance().StepToNextPlayer();
         TopBar.getinstance().RecountState();
+    }
+    
+    public void FireWin(){
+        inField = false;
+        MainWindow.getinstance().SwitchToState(MainWindow.MainWindowState.MAIN_MENU);
     }
 }

@@ -74,6 +74,27 @@ public class VOFieldLocation {
     
     public HashMap<BuildingType, Integer> buildingsOnLocation;
     
+    public ArrayList<Integer> GetUnitsOfTypeOwners(UnitController.UnitType type){
+        ArrayList<Integer> own = new ArrayList<Integer>();
+        
+        for(Integer i : unitsOnLocation.keySet()){
+            if(unitsOnLocation.get(i).containsKey(type) && unitsOnLocation.get(i).get(type) > 0)
+                own.add(i);
+        }
+        
+        return own;
+    }
+    
+    public int GetUnitTypeCount(UnitController.UnitType type){
+        int count = 0;
+        
+        for(Integer i : unitsOnLocation.keySet()){
+            if(unitsOnLocation.get(i).containsKey(type))
+                count += unitsOnLocation.get(i).get(type);
+        }
+        
+        return count;
+    }
     
     public void BuildOnLocation(BuildingType type){
         if(!buildingsOnLocation.containsKey(type)){
@@ -85,70 +106,63 @@ public class VOFieldLocation {
     }
     
     public void OnTurn(){
-        for (BuildingType buildingOrder : buildingOrder) {
-            if (buildingsOnLocation.containsKey(buildingOrder)) {
-                ProcessBuildingAction(buildingOrder, buildingsOnLocation.get(buildingOrder));
+        UnitController.ProcessUnitsActions(this);
+        RecountOwner();
+        if(curOwnerId != -1){
+            for (BuildingType buildingOrder : buildingOrder) {
+                if (buildingsOnLocation.containsKey(buildingOrder)) {
+                    ProcessBuildingAction(buildingOrder, buildingsOnLocation.get(buildingOrder));
+                }
             }
+        }
+    }
+    
+    private void RecountOwner(){
+        if(unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT) <= 0){
+            int id = -1;
+            int maxCount = -1;
+            for(Integer i : unitsOnLocation.keySet()){
+                int totalCount = 0;
+                totalCount += unitsOnLocation.get(i).containsKey(UnitController.UnitType.PRIEST) ? unitsOnLocation.get(i).get(UnitController.UnitType.PRIEST) : 0;
+                totalCount += unitsOnLocation.get(i).containsKey(UnitController.UnitType.SOLDIER) ? unitsOnLocation.get(i).get(UnitController.UnitType.SOLDIER) : 0;
+                
+                if(totalCount > maxCount){
+                    id = i;
+                    maxCount = totalCount;
+                }
+            }
+            
+            setcurOwnerId(id);
         }
     }
     
     private void ProcessBuildingAction(BuildingType type, int level){
         if(type == BuildingType.FARM){
-            if(!unitsOnLocation.containsKey(curOwnerId)){
-                unitsOnLocation.put(curOwnerId, new HashMap<UnitController.UnitType, Integer>());
-            }
+            int newCount = level * getMultiplierByBuildingType(type);
             
-            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.PEASANT)){
-                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, 0);
-            }
-            int newCount = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT)
-                    + level * getMultiplierByBuildingType(type);
-            
-            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, newCount);
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.PEASANT, newCount);
         }
         
         if(type == BuildingType.BARRACK){
-            if(!unitsOnLocation.containsKey(curOwnerId)){
-                unitsOnLocation.put(curOwnerId, new HashMap<UnitController.UnitType, Integer>());
-            }
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.PEASANT, 0);
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.SOLDIER, 0);
             
-            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.PEASANT)){
-                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, 0);
-            }
-            
-            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.SOLDIER)){
-                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.SOLDIER, 0);
-            }
             int convertCount = Math.min(unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT),
                     level * getMultiplierByBuildingType(type));
             
-            int newPeasants = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT) - convertCount;
-            int newSoldiers = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.SOLDIER) + convertCount;
-            
-            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, newPeasants);
-            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.SOLDIER, newSoldiers);
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.PEASANT, -convertCount);
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.SOLDIER, convertCount);
         }
         
         if(type == BuildingType.TEMPLE){
-            if(!unitsOnLocation.containsKey(curOwnerId)){
-                unitsOnLocation.put(curOwnerId, new HashMap<UnitController.UnitType, Integer>());
-            }
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.PEASANT, 0);
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.PRIEST, 0);
             
-            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.PEASANT)){
-                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, 0);
-            }
-            
-            if(!unitsOnLocation.get(curOwnerId).containsKey(UnitController.UnitType.PRIEST)){
-                unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PRIEST, 0);
-            }
             int convertCount = Math.min(unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT),
                     level * getMultiplierByBuildingType(type));
             
-            int newPeasants = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PEASANT) - convertCount;
-            int newPriests = unitsOnLocation.get(curOwnerId).get(UnitController.UnitType.PRIEST) + convertCount;
-            
-            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PEASANT, newPeasants);
-            unitsOnLocation.get(curOwnerId).put(UnitController.UnitType.PRIEST, newPriests);
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.PEASANT, -convertCount);
+            ShiftUnitCount(curOwnerId, UnitController.UnitType.PRIEST, convertCount);
         }
     }
     
@@ -158,5 +172,38 @@ public class VOFieldLocation {
         if(t == BuildingType.FARM) return data.weight * Constants.FARM_MULTIPLICATOR;
         if(t == BuildingType.TEMPLE) return data.weight * Constants.TEMPLE_MULTIPLICATOR;
         return data.weight;
+    }
+    
+    public void ShiftUnitCount(int owner, UnitController.UnitType type, int count){
+        if(!unitsOnLocation.containsKey(owner)){
+            unitsOnLocation.put(owner, new HashMap<UnitController.UnitType, Integer>());
+        }
+        if(!unitsOnLocation.get(owner).containsKey(type)){
+            unitsOnLocation.get(owner).put(type, 0);
+        }
+        unitsOnLocation.get(owner).put(type, unitsOnLocation.get(owner).get(type) + count);
+        
+        if(unitsOnLocation.get(owner).get(type) < 0){
+            unitsOnLocation.get(owner).put(type, 0);
+        }
+    }
+    
+    public void ShiftUnitCountNotOwner(int owner, UnitController.UnitType type, int count){
+        ArrayList owners = GetUnitsOfTypeOwners(type);
+        if(owners.contains(owner)){
+            owners.remove(owners.indexOf(owner));
+        }
+        
+        int rand = (int)Math.floor(Math.random() * owners.size());
+        
+        int available = unitsOnLocation.get(owners.get(rand)).get(type);
+        if(available >= count){
+            unitsOnLocation.get(owners.get(rand)).put(type, available - count);
+        }
+        else{
+            unitsOnLocation.get(owners.get(rand)).put(type, 0);
+            ShiftUnitCountNotOwner(owner, type, count - available);
+        }
+        
     }
 }

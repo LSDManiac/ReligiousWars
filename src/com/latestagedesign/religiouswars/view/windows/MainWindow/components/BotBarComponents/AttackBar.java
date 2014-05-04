@@ -79,7 +79,7 @@ public class AttackBar extends JComponent{
     }
     
     public void FireAttack(){
-        
+        FieldController.getinstance().FireAttack(slider.curNum, GetCurrentType());
     }
     
     private UnitController.UnitType GetCurrentType(){

@@ -21,6 +21,7 @@ package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
 import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.control.field.FieldCreator;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.components.TopBarComponent.TopBackButton;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.TopBarComponent.TopInfoBar;
 import java.awt.BorderLayout;
 import java.awt.Button;
@@ -48,6 +49,7 @@ public class TopBar extends JComponent{
         
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         
+        this.add(new TopBackButton());
         this.add(infobar);
         
         this.setMinimumSize(new Dimension(Short.MIN_VALUE, TOP_BAR_HEIGHT));

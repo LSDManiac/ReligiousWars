@@ -21,6 +21,7 @@ package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
 import com.latestagedesign.religiouswars.control.exceptions.InitializationException;
 import com.latestagedesign.religiouswars.control.field.FieldController;
+import com.latestagedesign.religiouswars.control.field.UnitController;
 import com.latestagedesign.religiouswars.model.Constants;
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
@@ -167,6 +168,8 @@ public class GameField extends JComponent{
             
                 g2.draw(polygon);
             }
+            g2.setColor(Color.BLACK);
+            g2.drawString(l.data.id + ") " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.PEASANT) + ", " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.SOLDIER) + ", " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.PRIEST), 5, 10 * l.data.id);
         }
         
         if(has2){

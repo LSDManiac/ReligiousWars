@@ -66,7 +66,7 @@ public class AttackBarSlider extends JComponent implements MouseListener, MouseM
         Graphics2D g2 = (Graphics2D)g;
         
         g.setColor(Color.white);
-        g.drawRect(0, 0, getWidth(), getHeight());
+        g.fillRect(0, 0, getWidth(), getHeight());
         
         if(maxNum > 0){
             left_x_pos = SIDE_GAPS;

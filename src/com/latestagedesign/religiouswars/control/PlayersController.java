@@ -19,6 +19,7 @@
 
 package com.latestagedesign.religiouswars.control;
 
+import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.model.Constants;
 import com.latestagedesign.religiouswars.model.VOClasses.VOPlayer;
 import java.awt.Color;
@@ -109,18 +110,26 @@ public class PlayersController {
     }
     
     public void StepToNextPlayer(){
+        int prevPlayer = curPlayerId;
+        int newPlayerId = -1;
         for(int i = 0; i < curPlayers.size(); i++){
-            if(curPlayers.get(i).id == curPlayerId){
-                if(i == curPlayers.size() - 1){
-                    curPlayerId = curPlayers.get(0).id;
-                    return;
-                }
-                else{
-                    curPlayerId = curPlayers.get(i + 1).id;
-                    return;
+            if(newPlayerId == -1){
+                if(curPlayers.get(i).id == curPlayerId){
+                    if(i == curPlayers.size() - 1){
+                        newPlayerId = curPlayers.get(0).id;
+                    }
+                    else{
+                        newPlayerId = curPlayers.get(i + 1).id;
+                    }
                 }
             }
         }
+        curPlayerId = newPlayerId;
+        if(FieldController.getinstance().GetPlayerProvinceCount(curPlayerId) <= 0)
+            StepToNextPlayer();
+        
+        if(curPlayerId == prevPlayer);
+            FieldController.getinstance().FireWin();
     }
     
     public int GetPlayerIdOnPos(int pos){
