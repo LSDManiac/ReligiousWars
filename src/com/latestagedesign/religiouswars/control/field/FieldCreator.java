@@ -4,6 +4,7 @@ import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.components.CustomBattleMenu;
 import com.sun.javafx.geom.Vec2f;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -36,6 +37,12 @@ public class FieldCreator {
         FieldController.getinstance().curMap = map;
         
         FieldController.getinstance().OnMapLoadingComplete();
+    }
+    
+    public static void CreatePreviewMap(int playerNum, VOMap.MapSize size){
+        VOMap map = CreateMapGraph(size);
+        
+        CustomBattleMenu.getinstance().RecieveMapLoaded(map);
     }
     
     private static VOMap CreateMapGraph(VOMap.MapSize size){

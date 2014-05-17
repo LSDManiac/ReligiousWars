@@ -37,8 +37,8 @@ public class MainMenu extends JComponent{
         j.add(new QuickStartButton());
         j.add(Box.createRigidArea(new Dimension(0, BUTTON_GAP)));
         j.add(new CustomStartButton());
-        j.add(Box.createRigidArea(new Dimension(0, BUTTON_GAP)));
-        j.add(new HelpButton());
+        //j.add(Box.createRigidArea(new Dimension(0, BUTTON_GAP)));
+        //j.add(new HelpButton());
         j.add(Box.createVerticalGlue());
         
         this.add(Box.createHorizontalGlue());
