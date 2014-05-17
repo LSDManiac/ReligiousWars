@@ -1,22 +1,3 @@
-/*
- * Late Stage Design
- * Created by Gregory
- * -------------------------------------------
- * Engoy the Dude's Favorite Coctail
- * 
- * Ingredients:
- * - 2 oz Vodka
- * - 1 oz Kahlúa
- * - Heavy cream
- * - Old Fashioned glass
- * 
- * How To Make:
- * Add the vodka and Kahlúa to an Old Fashioned glass filled with ice.
- * Top with a large splash of heavy cream and stir.
- * 
- * Have a nise day!
- */
-
 package com.latestagedesign.religiouswars.model;
 
 import java.util.HashMap;
@@ -40,9 +21,24 @@ public class Localization {
         langs.put("EN", new HashMap<String, String>());
         langs.get("EN").put("#religious_wars", "Religious Wars");
         langs.get("EN").put("#top_info_bar_text", "Now %name%'s turn");
+        langs.get("EN").put("#send", "Send");
+        langs.get("EN").put("#no_such_unit_on_location", "No such unit on location");
+        langs.get("EN").put("#custom_start", "Custom start");
+        langs.get("EN").put("#help", "Help");
+        langs.get("EN").put("#quick_start", "New game");
+        langs.get("EN").put("#resume", "Resume");
+        langs.get("EN").put("#back", "Back");
+        
         langs.put("RU", new HashMap<String, String>());
         langs.get("RU").put("#religious_wars", "Религиозные Войны");
         langs.get("RU").put("#top_info_bar_text", "Ход игрока %name%");
+        langs.get("RU").put("#send", "Послать");
+        langs.get("RU").put("#no_such_unit_on_location", "В локации нет юнитов данного типа");
+        langs.get("RU").put("#custom_start", "Новая игра");
+        langs.get("RU").put("#help", "Помощь");
+        langs.get("RU").put("#quick_start", "Быстрый старт");
+        langs.get("RU").put("#resume", "Продолжить");
+        langs.get("RU").put("#back", "Назад");
         
         return langs;
     }

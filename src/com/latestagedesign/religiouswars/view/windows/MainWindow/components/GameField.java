@@ -1,22 +1,3 @@
-/*
- * Late Stage Design
- * Created by Gregory
- * -------------------------------------------
- * Engoy the Dude's Favorite Coctail
- * 
- * Ingredients:
- * - 2 oz Vodka
- * - 1 oz Kahlúa
- * - Heavy cream
- * - Old Fashioned glass
- * 
- * How To Make:
- * Add the vodka and Kahlúa to an Old Fashioned glass filled with ice.
- * Top with a large splash of heavy cream and stir.
- * 
- * Have a nise day!
- */
-
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
 import com.latestagedesign.religiouswars.control.exceptions.InitializationException;
@@ -168,8 +149,8 @@ public class GameField extends JComponent{
             
                 g2.draw(polygon);
             }
-            g2.setColor(Color.BLACK);
-            g2.drawString(l.data.id + ") " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.PEASANT) + ", " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.SOLDIER) + ", " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.PRIEST), 5, 10 * l.data.id);
+            //g2.setColor(Color.BLACK);
+            //g2.drawString(l.data.id + ") " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.PEASANT) + ", " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.SOLDIER) + ", " + l.unitsOnLocation.get(l.curOwnerId).get(UnitController.UnitType.PRIEST), 5, 10 * l.data.id);
         }
         
         if(has2){

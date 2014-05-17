@@ -1,22 +1,3 @@
-/*
- * Late Stage Design
- * Created by Gregory
- * -------------------------------------------
- * Engoy the Dude's Favorite Coctail
- * 
- * Ingredients:
- * - 2 oz Vodka
- * - 1 oz Kahlúa
- * - Heavy cream
- * - Old Fashioned glass
- * 
- * How To Make:
- * Add the vodka and Kahlúa to an Old Fashioned glass filled with ice.
- * Top with a large splash of heavy cream and stir.
- * 
- * Have a nise day!
- */
-
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
 import com.latestagedesign.religiouswars.control.field.FieldController;
@@ -59,7 +40,7 @@ public class BotBar extends JComponent {
         hiddenBar = new JPanel();
         attackBar = new AttackBar();
         hiddenBar.setLayout(new BorderLayout());
-        hiddenBar.add(new Button("hidden"), BorderLayout.CENTER);
+        //hiddenBar.add(new Button("hidden"), BorderLayout.CENTER);
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         add(buildBar);
         add(attackBar);
