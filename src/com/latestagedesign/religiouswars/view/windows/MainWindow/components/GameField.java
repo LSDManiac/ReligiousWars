@@ -1,5 +1,6 @@
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
+import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.control.exceptions.InitializationException;
 import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.control.field.UnitController;
@@ -93,13 +94,20 @@ public class GameField extends JComponent{
             int centerx = 0;
             int centery = 0;
             
+            int minX = Integer.MAX_VALUE;
+            
             for(int i = 0; i < xPoints.length; i++){
                 centerx += xPoints[i];
                 centery += yPoints[i];
+                if(minX > xPoints[i])
+                    minX = xPoints[i];
             }
             
             centerx /= xPoints.length;
             centery /= xPoints.length;
+            
+            int center = (centerx + minX) / 2;
+            centerx = (centerx + center) / 2;
             
             l.center = new Point(centerx, centery);
             
@@ -177,49 +185,193 @@ public class GameField extends JComponent{
         for(VOFieldLocation l : fieldLocations){
             PaintUnits(g2, l);
         }
+        
+        if(controller.curState == FieldController.ControllerStates.ATTACKING){
+            int b = 30;
+            int a = 20;
+            g2.setStroke(new BasicStroke(4));
+            g2.setColor(Color.black);
+            Point atCenter = controller.curMap.GetLocationById(controller.selectedAttackedLocation).fLoc.center; //2
+            Point atkCenter = controller.curMap.GetLocationById(controller.selectedAttackingLocation).fLoc.center; //1
+            
+            g2.drawLine(atCenter.x, atCenter.y, atkCenter.x, atkCenter.y);
+            
+            double k1 = ((double)atCenter.y - (double)atkCenter.y) / ((double)atCenter.x - (double)atkCenter.x);
+            double k2 = ((double)atkCenter.x - (double)atCenter.x) / ((double)atCenter.y - (double)atkCenter.y);
+            double p1 = ((double)atkCenter.y * (double)atCenter.x - (double)atCenter.y * (double)atkCenter.x) / ((double)atCenter.x - (double)atkCenter.x);
+            double A = 1 + k1 * k1;
+            double B = 2 * k1 * p1 - 2 * (double)atCenter.x - 2 * k1 * (double)atCenter.y;
+            double C = (double)atCenter.x * (double)atCenter.x + p1 * p1 + (double)atCenter.y * (double)atCenter.y - b * b - 2 * p1 * (double)atCenter.y;
+            double x0 = (- B + (int)Math.sqrt(B * B - 4 * A * C)) / (2 * A);
+            double y0 = k1 * x0 + p1;
+            if(x0 < Math.min(atCenter.x, atkCenter.x)
+                    || x0 > Math.max(atCenter.x, atkCenter.x)
+                    || y0 < Math.min(atCenter.y, atkCenter.y)
+                    || y0 > Math.max(atCenter.y, atkCenter.y)){
+                x0 = (- B - (int)Math.sqrt(B * B - 4 * A * C)) / (2 * A);
+                y0 = k1 * x0 + p1;
+            }
+            
+            double p2 = y0 + x0 / k1;
+            double A1 = 1 + k2 * k2;
+            double B1 = 2 * k2 * p2 - 2 * k2 * y0 - 2 * x0;
+            double C1 = p2 * p2 + y0 * y0 + x0 * x0 - 2 * p2 * y0 - a * a;
+            
+            double x31 = (-B1 + (int)Math.sqrt(B1 * B1 - 4 * A1 * C1)) / (2 * A1);
+            double x32 = (-B1 - (int)Math.sqrt(B1 * B1 - 4 * A1 * C1)) / (2 * A1);
+            
+            double y31 = k2 * x31 + p2;
+            double y32 = k2 * x32 + p2;
+            
+            System.out.println(x31 + " " + y31 + " | " + x32 + " " + y32);
+            
+            Point arrowLine1 = new Point((int)x31, (int)y31);
+            Point arrowLine2 = new Point((int)x32, (int)y32);
+            
+            g2.drawLine(atCenter.x, atCenter.y, arrowLine1.x, arrowLine1.y);
+            g2.drawLine(atCenter.x, atCenter.y, arrowLine2.x, arrowLine2.y);
+        }
     }
     
+    private static int PEASANT_X_SHIFT = 5;
+    private static int PEASANT_Y_SHIFT = 5;
+    
+    private static int SOLDIER_X_SHIFT = 13;
+    private static int SOLDIER_Y_SHIFT = 13;
+    
+    private static int PRIEST_X_SHIFT = 13;
+    private static int PRIEST_Y_SHIFT = 13;
+    
     private void PaintUnits(Graphics2D g2, VOFieldLocation l){
-        int peasantX = l.center.x;
+        boolean peasantTop = false;
+        int peasantX = l.center.x - PEASANT_X_SHIFT;
         int peasantY = l.center.y;
         int soldierX = l.center.x;
-        int soldierY = l.center.y;
+        int soldierY = l.center.y - SOLDIER_Y_SHIFT;
         int priestX = l.center.x;
-        int priestY = l.center.y;
+        int priestY = l.center.y + PRIEST_Y_SHIFT;
         for(int i : l.unitsOnLocation.keySet()){
-            for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.PEASANT); j++){
-                Point p = new Point(peasantX, peasantY);
+            if(l.unitsOnLocation.get(i).containsKey(UnitController.UnitType.PEASANT)){
+                for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.PEASANT); j++){
+                    Point p = new Point(peasantX - PEASANT_X_SHIFT, peasantY);
+                    if(HitPolygon(p, l.polygon, UnitController.UnitType.PEASANT)){
+                        PaintUnitOnPos(g2, UnitController.UnitType.PEASANT, p, PlayersController.getinstance().GetPlayerColorById(i));
+                    }
+                    else{
+                        p = new Point(l.center.x - 2 * PEASANT_X_SHIFT, peasantY - PEASANT_Y_SHIFT);
+                        if(peasantY == l.center.y && HitPolygon(p, l.polygon, UnitController.UnitType.PEASANT)){
+                            PaintUnitOnPos(g2, UnitController.UnitType.PEASANT, p, PlayersController.getinstance().GetPlayerColorById(i));
+                            peasantTop = true;
+                        }
+                        else{
+                            if(peasantTop){
+                                p = new Point(l.center.x - 2 * PEASANT_X_SHIFT, -peasantY);
+                                peasantTop = false;
+                            }
+                            else{
+                                p = new Point(l.center.x - 2 * PEASANT_X_SHIFT, -peasantY - PEASANT_Y_SHIFT);
+                                peasantTop = true;
+                            }
+                            if(HitPolygon(p, l.polygon, UnitController.UnitType.PEASANT)){
+                                PaintUnitOnPos(g2, UnitController.UnitType.PEASANT, p, PlayersController.getinstance().GetPlayerColorById(i));
+                            }
+                            else{
+                                p = new Point(peasantX, peasantY);
+                            }
+                        }
+                    }
+                    peasantX = p.x;
+                    peasantY = p.y;
+                }
             }
             
-            for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.SOLDIER); j++){
-                
+            if(l.unitsOnLocation.get(i).containsKey(UnitController.UnitType.SOLDIER)){
+                for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.SOLDIER); j++){
+                    Point p = new Point(soldierX + SOLDIER_X_SHIFT, soldierY);
+                    if(HitPolygon(p, l.polygon, UnitController.UnitType.SOLDIER)){
+                        PaintUnitOnPos(g2, UnitController.UnitType.SOLDIER, p, PlayersController.getinstance().GetPlayerColorById(i));
+                    }
+                    else{
+                        p = new Point(l.center.x + SOLDIER_X_SHIFT, soldierY - SOLDIER_Y_SHIFT);
+                        if(HitPolygon(p, l.polygon, UnitController.UnitType.SOLDIER)){
+                            PaintUnitOnPos(g2, UnitController.UnitType.SOLDIER, p, PlayersController.getinstance().GetPlayerColorById(i));
+                        }
+                        else{
+                            p = new Point(soldierX, soldierY);
+                        }
+                    }
+                    soldierX = p.x;
+                    soldierY = p.y;
+                }
             }
             
-            for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.PRIEST); j++){
-                
+            if(l.unitsOnLocation.get(i).containsKey(UnitController.UnitType.PRIEST)){
+                for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.PRIEST); j++){
+                    Point p = new Point(priestX + PRIEST_X_SHIFT, priestY);
+                    if(HitPolygon(p, l.polygon, UnitController.UnitType.PRIEST)){
+                        PaintUnitOnPos(g2, UnitController.UnitType.PRIEST, p, PlayersController.getinstance().GetPlayerColorById(i));
+                    }
+                    else{
+                        p = new Point(l.center.x + PRIEST_X_SHIFT, priestY + PRIEST_Y_SHIFT);
+                        if(HitPolygon(p, l.polygon, UnitController.UnitType.PRIEST)){
+                            PaintUnitOnPos(g2, UnitController.UnitType.PRIEST, p, PlayersController.getinstance().GetPlayerColorById(i));
+                        }
+                        else{
+                            p = new Point(priestX, priestY);
+                        }
+                    }
+                    priestX = p.x;
+                    priestY = p.y;
+                }
             }
         }
+    }
+    
+    private boolean HitPolygon(Point p, Polygon pl, UnitController.UnitType type){
+        boolean hit = true;
+        int shX = PEASANT_X_SHIFT / 2;
+        int shY = PEASANT_Y_SHIFT / 2;
+        if(type == UnitController.UnitType.PEASANT){
+            shX = PEASANT_X_SHIFT / 2;
+            shY = PEASANT_Y_SHIFT / 2;
+        }
+        if(type == UnitController.UnitType.PRIEST){
+            shX = PRIEST_X_SHIFT / 2;
+            shY = PRIEST_Y_SHIFT / 2;
+        }
+        if(type == UnitController.UnitType.SOLDIER){
+            shX = SOLDIER_X_SHIFT / 2;
+            shY = SOLDIER_Y_SHIFT / 2;
+        }
+        
+        hit = hit && pl.contains(p);
+        hit = hit && pl.contains(new Point(p.x + shX, p.y + shY));
+        hit = hit && pl.contains(new Point(p.x + shX, p.y - shY));
+        hit = hit && pl.contains(new Point(p.x - shX, p.y + shY));
+        hit = hit && pl.contains(new Point(p.x - shX, p.y - shY));
+        
+        return hit;
     }
     
     private void PaintUnitOnPos(Graphics2D g2, UnitController.UnitType t, Point p, Color c){
         switch(t){
             case PEASANT:
                 g2.setColor(c);
-                g2.fillRect(p.x, p.y, 1, p.y);
+                g2.fillRect(p.x - 1, p.y - 1, 3, 3);
                 break;
             case PRIEST:
                 g2.setColor(Color.BLACK);
-                g2.fillOval(p.x - 3, p.y - 3, 6, 6);
+                g2.fillOval(p.x - 6, p.y - 6, 12, 12);
                 g2.setColor(c);
-                g2.fillOval(p.x - 2, p.y - 2, 4, 4);
+                g2.fillOval(p.x - 5, p.y - 5, 10, 10);
                 break;
             case SOLDIER:
                 g2.setColor(Color.BLACK);
-                g2.fillRect(p.x - 1, p.y - 3, 3, 7);
-                g2.fillRect(p.x - 3, p.y - 1, 7, 3);
+                g2.fillRect(p.x - 2, p.y - 5, 5, 11);
+                g2.fillRect(p.x - 5, p.y - 2, 11, 5);
                 g2.setColor(c);
-                g2.fillRect(p.x, p.y - 2, 1, 5);
-                g2.fillRect(p.x - 2, p.y, 5, 1);
+                g2.fillRect(p.x - 1, p.y - 4, 3, 9);
+                g2.fillRect(p.x - 4, p.y - 1, 9, 3);
                 break;
         }
     }

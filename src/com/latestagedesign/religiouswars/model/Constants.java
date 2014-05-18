@@ -18,6 +18,7 @@ public class Constants {
     public static int TEMPLE_MULTIPLICATOR = 1;
     
     public static Color NOBODY_PROVINCE_COLOR = new Color(215, 215, 215);
+    public static Color NOBODY_PLAYER_COLOR = Color.gray;
     
     public static int START_PRIEST_NUMBER = 10;
     public static int START_SOLDIER_NUMBER = 10;

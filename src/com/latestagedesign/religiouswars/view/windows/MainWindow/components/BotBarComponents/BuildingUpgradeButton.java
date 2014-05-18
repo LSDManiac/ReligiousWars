@@ -3,12 +3,14 @@ package com.latestagedesign.religiouswars.view.windows.MainWindow.components.Bot
 import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.control.field.UnitController;
+import com.latestagedesign.religiouswars.model.Localization;
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
 import com.latestagedesign.religiouswars.view.gui.GraphicButton;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -57,7 +59,7 @@ public class BuildingUpgradeButton extends GraphicButton implements MouseListene
 
     @Override
     public void paintContent(Graphics g) {
-        
+        g.setFont(new Font("Courier", Font.BOLD, 14));
         DrawSymbol(g);
         int count = 0;
         if(FieldController.getinstance().curMap.GetLocationById(LocationId).fLoc.buildingsOnLocation.containsKey(type)){
@@ -76,7 +78,8 @@ public class BuildingUpgradeButton extends GraphicButton implements MouseListene
         
         int plusNum = count * FieldController.getinstance().curMap.GetLocationById(LocationId).fLoc.getMultiplierByBuildingType(type);
         
-        g.drawString(curUnitNum + " (+" + plusNum + ")", getHeight() + 15 + x_shift, getHeight()/2 + 5 + y_shift);
+        g.drawString(Localization.Get("#building_" + type), getHeight() + 15 + x_shift, getHeight()/2 - 5 + y_shift);
+        g.drawString(curUnitNum + " (+" + plusNum + ")", getHeight() + 15 + x_shift, getHeight()/2 + 13 + y_shift);
     }
     
     @Override

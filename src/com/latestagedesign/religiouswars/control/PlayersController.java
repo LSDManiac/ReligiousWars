@@ -66,7 +66,7 @@ public class PlayersController {
             if(pl.id == id)
                 return pl.playerColor;
         }
-        return Constants.NOBODY_PROVINCE_COLOR;
+        return Constants.NOBODY_PLAYER_COLOR;
     }
     
     public Color GetTerritoryPlayerColorById(int id){

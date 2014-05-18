@@ -31,6 +31,9 @@ public class Localization {
         langs.get("EN").put("#start", "Start");
         langs.get("EN").put("#map_size", "Map size");
         langs.get("EN").put("#players_num", "Players");
+        langs.get("EN").put("#building_FARM", "Farm");
+        langs.get("EN").put("#building_BARRACK", "Barrack");
+        langs.get("EN").put("#building_TEMPLE", "Temple");
         
         langs.put("RU", new HashMap<String, String>());
         langs.get("RU").put("#religious_wars", "Религиозные Войны");
@@ -45,6 +48,9 @@ public class Localization {
         langs.get("RU").put("#start", "Старт");
         langs.get("RU").put("#map_size", "Размер карты");
         langs.get("RU").put("#players_num", "Игроки");
+        langs.get("RU").put("#building_FARM", "Ферма");
+        langs.get("RU").put("#building_BARRACK", "Бараки");
+        langs.get("RU").put("#building_TEMPLE", "Храм");
         
         return langs;
     }

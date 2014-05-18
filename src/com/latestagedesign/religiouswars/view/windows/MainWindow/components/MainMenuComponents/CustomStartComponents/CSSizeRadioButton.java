@@ -5,6 +5,7 @@ import com.latestagedesign.religiouswars.view.gui.GraphicRadioButton;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.CustomBattleMenu;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 
 public class CSSizeRadioButton extends GraphicRadioButton {
@@ -28,9 +29,10 @@ public class CSSizeRadioButton extends GraphicRadioButton {
         g.fillRect(OUTER_GAP + x_shift, OUTER_GAP + y_shift, getWidth() - 2 - OUTER_GAP + x_shift, getHeight() - 2 - OUTER_GAP + y_shift);
         
         g.setColor(Color.black);
+        g.setFont(new Font("Courier", Font.BOLD, 14));
         String str = GetLabelBySize(size);
-        int shift = (int)(str.length() / 2.0 * 5);
-        g.drawString(str, getWidth()/2 - shift + x_shift, getHeight()/2 + 5 + y_shift);
+        int shift = (int)(str.length() / 2.0 * 8);
+        g.drawString(str, getWidth()/2 - shift + x_shift, getHeight()/2 + 6 + y_shift);
     }
 
     @Override
@@ -39,9 +41,10 @@ public class CSSizeRadioButton extends GraphicRadioButton {
         g.fillRect(OUTER_GAP + x_shift, OUTER_GAP + y_shift, getWidth() - 2 - OUTER_GAP + x_shift, getHeight() - 2 - OUTER_GAP + y_shift);
         
         g.setColor(Color.black);
+        g.setFont(new Font("Courier", Font.BOLD, 14));
         String str = GetLabelBySize(size);
-        int shift = (int)(str.length() / 2.0 * 5);
-        g.drawString(str, getWidth()/2 - shift + x_shift, getHeight()/2 + 5 + y_shift);
+        int shift = (int)(str.length() / 2.0 * 8);
+        g.drawString(str, getWidth()/2 - shift + x_shift, getHeight()/2 + 6 + y_shift);
     }
 
     @Override

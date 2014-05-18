@@ -5,6 +5,7 @@ import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotB
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -61,8 +62,9 @@ public class AttackBarSlider extends JComponent implements MouseListener, MouseM
             g2.setColor(Color.black);
             g2.drawLine(cur_x_pos, getHeight() / 2 + 5, cur_x_pos, getHeight() / 2 - 5);
 
-            g2.drawString("0", left_x_pos - 8, getHeight() / 2 - 4);
-            g2.drawString(maxNum + "", right_x_pos + 3, getHeight() / 2 - 4);
+            g2.setFont(new Font("Courier", Font.BOLD, 14));
+            g2.drawString("0", left_x_pos - 16, getHeight() / 2 - 6);
+            g2.drawString(maxNum + "", right_x_pos + 3, getHeight() / 2 - 6);
             g2.drawString(curNum + "", getWidth()/2, getHeight() - 5);
         }
         else{

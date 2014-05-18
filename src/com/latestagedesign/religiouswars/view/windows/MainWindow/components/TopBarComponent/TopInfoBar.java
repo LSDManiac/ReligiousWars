@@ -5,6 +5,7 @@ import com.latestagedesign.religiouswars.model.Localization;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.TopBar;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JComponent;
 
@@ -23,6 +24,7 @@ public class TopInfoBar extends JComponent {
         
         String text = Localization.Get("#top_info_bar_text").replaceAll("%name%", PlayersController.getinstance().GetCurrentPlayerName());
         g.setColor(Color.black);
+        g.setFont(new Font("Courier", Font.BOLD, 14));
         g.drawString(text, 20, getHeight()/2 + 5);
         
         g.setColor(PlayersController.getinstance().GetCurrentPlayerColor());
