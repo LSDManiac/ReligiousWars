@@ -30,6 +30,13 @@ public class PlayersController {
         new Color(255, 215, 255),
         new Color(215, 255, 255)};
     
+    public Color GetTerritoryNumeredColor(int i){
+        if(i > -1 && i < playersTerritoryColor.length){
+            return playersTerritoryColor[i];
+        }
+        return Constants.NOBODY_PROVINCE_COLOR;
+    }
+    
     public PlayersController(){
         curPlayers = new ArrayList<VOPlayer>();
     }

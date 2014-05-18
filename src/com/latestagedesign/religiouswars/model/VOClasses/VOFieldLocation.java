@@ -25,6 +25,8 @@ public class VOFieldLocation {
     
     public Polygon polygon;
     
+    public Point center;
+    
     public Color curColor = Constants.NOBODY_PROVINCE_COLOR;
     
     public int curOwnerId = -1;

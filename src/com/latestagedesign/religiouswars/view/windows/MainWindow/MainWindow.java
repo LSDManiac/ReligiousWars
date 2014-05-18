@@ -1,10 +1,6 @@
 package com.latestagedesign.religiouswars.view.windows.MainWindow;
 
-import com.latestagedesign.religiouswars.control.PlayersController;
-import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.model.Localization;
-import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
-import com.latestagedesign.religiouswars.view.gui.UIImage;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.BotBar;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.CustomBattleMenu;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.GameField;
@@ -91,6 +87,7 @@ public class MainWindow extends TopComponent{
                 break;
             case CUSTOM_BATTLE_MENU:
                 cbMenu.setVisible(true);
+                cbMenu.ParametersChanged();
                 break;
             case GAME:
                 gameScreen.setVisible(true);

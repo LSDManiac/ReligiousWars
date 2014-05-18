@@ -1,11 +1,17 @@
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
+import com.latestagedesign.religiouswars.control.PlayersController;
+import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.control.field.FieldCreator;
+import com.latestagedesign.religiouswars.model.Localization;
 import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
+import com.latestagedesign.religiouswars.view.gui.GraphicLabel;
 import com.latestagedesign.religiouswars.view.gui.RadioButtonController;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.MainWindow;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.CustomStartComponents.CSMapPreview;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.CustomStartComponents.CSPlayerRadioButton;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.CustomStartComponents.CSSizeRadioButton;
+import com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.CustomStartComponents.CSStartButton;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.QuickStartButton;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -52,7 +58,7 @@ public class CustomBattleMenu extends JComponent {
         
         Box l = new Box(BoxLayout.X_AXIS);
         
-        for(int i = 1; i < 4; i++){
+        for(int i = 2; i < 5; i++){
             CSPlayerRadioButton r = new CSPlayerRadioButton(i);
             r.playerNum = i;
             playerController.AddRadioButton(r);
@@ -62,23 +68,24 @@ public class CustomBattleMenu extends JComponent {
             }
         }
         
-        
         Box j = new Box(BoxLayout.Y_AXIS);
         j.add(Box.createVerticalGlue());
         j.add(mapPreview);
-        j.add(Box.createRigidArea(new Dimension(0, LABEL_GAP)));
+        j.add(Box.createRigidArea(new Dimension(0, GAP)));
+        j.add(new GraphicLabel(Localization.Get("#map_size")));
+        j.add(Box.createRigidArea(new Dimension(0, GAP)));
         j.add(k);
-        j.add(Box.createRigidArea(new Dimension(0, LABEL_GAP)));
+        j.add(Box.createRigidArea(new Dimension(0, GAP)));
+        j.add(new GraphicLabel(Localization.Get("#players_num")));
+        j.add(Box.createRigidArea(new Dimension(0, GAP)));
         j.add(l);
         j.add(Box.createRigidArea(new Dimension(0, GAP)));
-        j.add(new QuickStartButton());
+        j.add(new CSStartButton());
         j.add(Box.createVerticalGlue());
         
         this.add(Box.createHorizontalGlue());
         this.add(j);
         this.add(Box.createHorizontalGlue());
-        
-        ParametersChanged();
     }
     
     public void ParametersChanged(){
@@ -86,7 +93,14 @@ public class CustomBattleMenu extends JComponent {
     }
     
     public void RecieveMapLoaded(VOMap map){
-        mapPreview.SetMap(map);
+        mapPreview.SetMap(map, playerController.GetChosenId());
+    }
+    
+    public void FireStartClicked(){
+        
+        PlayersController.getinstance().CreatePlayers(playerController.GetChosenId());
+        FieldController.getinstance().CreateField(playerController.GetChosenId(), GetSizeById(sizeController.GetChosenId()));
+        MainWindow.getinstance().SwitchToState(MainWindow.MainWindowState.GAME);
     }
     
     @Override

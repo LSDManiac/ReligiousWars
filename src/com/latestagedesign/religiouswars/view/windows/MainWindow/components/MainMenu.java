@@ -1,6 +1,5 @@
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components;
 
-import com.latestagedesign.religiouswars.view.gui.GraphicGap;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.CustomStartButton;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.HelpButton;
 import com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.QuickStartButton;

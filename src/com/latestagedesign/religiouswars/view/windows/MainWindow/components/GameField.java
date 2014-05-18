@@ -5,25 +5,18 @@ import com.latestagedesign.religiouswars.control.field.FieldController;
 import com.latestagedesign.religiouswars.control.field.UnitController;
 import com.latestagedesign.religiouswars.model.Constants;
 import com.latestagedesign.religiouswars.model.VOClasses.VOFieldLocation;
-import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
 import com.sun.javafx.geom.Vec2f;
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
-import java.util.ArrayList;
 import java.util.List;
-import javafx.util.Pair;
 import javax.swing.JComponent;
 
 public class GameField extends JComponent{
@@ -41,6 +34,7 @@ public class GameField extends JComponent{
         
     }
     
+    @Override
     public void paint(Graphics g) {
         g.setColor(Color.white);
         g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
@@ -95,6 +89,19 @@ public class GameField extends JComponent{
             Polygon pol = new Polygon(xPoints, yPoints, yPoints.length);
             
             l.polygon = pol;
+            
+            int centerx = 0;
+            int centery = 0;
+            
+            for(int i = 0; i < xPoints.length; i++){
+                centerx += xPoints[i];
+                centery += yPoints[i];
+            }
+            
+            centerx /= xPoints.length;
+            centery /= xPoints.length;
+            
+            l.center = new Point(centerx, centery);
             
             g2.setColor(l.curColor);
             g2.setStroke(new BasicStroke(1));
@@ -165,6 +172,55 @@ public class GameField extends JComponent{
             g2.setStroke(new BasicStroke(size1));
 
             g2.draw(pol1);
+        }
+        
+        for(VOFieldLocation l : fieldLocations){
+            PaintUnits(g2, l);
+        }
+    }
+    
+    private void PaintUnits(Graphics2D g2, VOFieldLocation l){
+        int peasantX = l.center.x;
+        int peasantY = l.center.y;
+        int soldierX = l.center.x;
+        int soldierY = l.center.y;
+        int priestX = l.center.x;
+        int priestY = l.center.y;
+        for(int i : l.unitsOnLocation.keySet()){
+            for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.PEASANT); j++){
+                Point p = new Point(peasantX, peasantY);
+            }
+            
+            for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.SOLDIER); j++){
+                
+            }
+            
+            for(int j = 0; j < l.unitsOnLocation.get(i).get(UnitController.UnitType.PRIEST); j++){
+                
+            }
+        }
+    }
+    
+    private void PaintUnitOnPos(Graphics2D g2, UnitController.UnitType t, Point p, Color c){
+        switch(t){
+            case PEASANT:
+                g2.setColor(c);
+                g2.fillRect(p.x, p.y, 1, p.y);
+                break;
+            case PRIEST:
+                g2.setColor(Color.BLACK);
+                g2.fillOval(p.x - 3, p.y - 3, 6, 6);
+                g2.setColor(c);
+                g2.fillOval(p.x - 2, p.y - 2, 4, 4);
+                break;
+            case SOLDIER:
+                g2.setColor(Color.BLACK);
+                g2.fillRect(p.x - 1, p.y - 3, 3, 7);
+                g2.fillRect(p.x - 3, p.y - 1, 7, 3);
+                g2.setColor(c);
+                g2.fillRect(p.x, p.y - 2, 1, 5);
+                g2.fillRect(p.x - 2, p.y, 5, 1);
+                break;
         }
     }
     

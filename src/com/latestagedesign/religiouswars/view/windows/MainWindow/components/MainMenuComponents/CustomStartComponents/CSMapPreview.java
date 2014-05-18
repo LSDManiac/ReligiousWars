@@ -1,5 +1,6 @@
 package com.latestagedesign.religiouswars.view.windows.MainWindow.components.MainMenuComponents.CustomStartComponents;
 
+import com.latestagedesign.religiouswars.control.PlayersController;
 import com.latestagedesign.religiouswars.model.Constants;
 import com.latestagedesign.religiouswars.model.VOClasses.VOLocation;
 import com.latestagedesign.religiouswars.model.VOClasses.VOMap;
@@ -19,6 +20,7 @@ public class CSMapPreview extends JComponent {
     public static int MAP_HEIGHT = 200;
     
     public VOMap map;
+    public int playerNum;
     
     public CSMapPreview(){
         this.setMinimumSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
@@ -26,8 +28,9 @@ public class CSMapPreview extends JComponent {
         this.setPreferredSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
     }
     
-    public void SetMap(VOMap _map){
+    public void SetMap(VOMap _map, int _playerNum){
         this.map = _map;
+        playerNum = _playerNum;
         repaint();
     }
     
@@ -38,6 +41,8 @@ public class CSMapPreview extends JComponent {
         if(map == null) return;
         
         Graphics2D g2 = (Graphics2D)g;
+        
+        int pl = 0;
         
         for(VOLocation l : map.locations){
             int xPoints[] = new int[l.borders.size()];
@@ -78,7 +83,14 @@ public class CSMapPreview extends JComponent {
             
             Polygon pol = new Polygon(xPoints, yPoints, yPoints.length);
             
-            g2.setColor(Color.gray);
+            Color c = Constants.NOBODY_PROVINCE_COLOR;
+            
+            if(l.isStart && pl < playerNum){
+                c = PlayersController.getinstance().GetTerritoryNumeredColor(pl);
+                pl++;
+            }
+            
+            g2.setColor(c);
             g2.setStroke(new BasicStroke(1));
             g2.fillPolygon(pol);
             
